@@ -438,6 +438,48 @@ body {
   max-height: calc(90vh - 100px);
 }
 
+/* ─── Onboarding wizard buttons ─── */
+.ob-btn {
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  background-color: transparent;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.ob-btn:hover {
+  color: #ffffff !important;
+  border-color: #94a3b8 !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.ob-btn-primary {
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  background-color: transparent;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.ob-btn-primary:hover {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  background-color: rgba(34, 211, 238, 0.15) !important;
+}
+
+.ob-btn-close {
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+  background-color: transparent;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+.ob-btn-close:hover {
+  color: #ffffff !important;
+  border-color: #94a3b8 !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
 /* ─── Onboarding demo animations ─────────────────────────────────────────────
    Two looping, CSS-driven mini-diagrams used by the onboarding wizard to show
    (1) clicking a box to open its detail panel and (2) double-clicking to drill

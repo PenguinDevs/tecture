@@ -138,12 +138,7 @@ export function OnboardingWizard({
             type="button"
             onClick={onClose}
             aria-label="Skip tour"
-            className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center border transition-colors hover:text-white"
-            style={{
-              borderColor: "var(--border-default)",
-              color: "var(--text-muted)",
-              backgroundColor: "transparent",
-            }}
+            className="ob-btn-close ml-4 flex h-7 w-7 shrink-0 items-center justify-center border"
           >
             <svg
               width="12"
@@ -206,13 +201,7 @@ export function OnboardingWizard({
               <button
                 type="button"
                 onClick={handleDontShowAgain}
-                className="border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors hover:text-white"
-                style={{
-                  borderColor: "var(--border-default)",
-                  color: "var(--text-muted)",
-                  fontFamily: "var(--font-mono)",
-                  backgroundColor: "transparent",
-                }}
+                className="ob-btn border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase"
               >
                 Don't show again
               </button>
@@ -224,13 +213,7 @@ export function OnboardingWizard({
               <button
                 type="button"
                 onClick={back}
-                className="border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors hover:text-white"
-                style={{
-                  borderColor: "var(--border-default)",
-                  color: "var(--text-muted)",
-                  fontFamily: "var(--font-mono)",
-                  backgroundColor: "transparent",
-                }}
+                className="ob-btn border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase"
               >
                 Back
               </button>
@@ -238,13 +221,7 @@ export function OnboardingWizard({
             <button
               type="button"
               onClick={next}
-              className="border px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors hover:text-white"
-              style={{
-                borderColor: "var(--accent-cyan)",
-                color: "var(--accent-cyan)",
-                fontFamily: "var(--font-mono)",
-                backgroundColor: "transparent",
-              }}
+              className="ob-btn-primary border px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase"
             >
               {step === last ? "Got it" : "Next"}
             </button>
