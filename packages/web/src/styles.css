@@ -60,7 +60,7 @@ body {
 
 /* ─── Blueprint Grid Background ─── */
 .blueprint-grid {
-  background-color: #0a0f1a;
+  background-color: var(--bg-deep);
   background-image:
     linear-gradient(rgba(34, 78, 130, 0.18) 1px, transparent 1px),
     linear-gradient(90deg, rgba(34, 78, 130, 0.18) 1px, transparent 1px),
