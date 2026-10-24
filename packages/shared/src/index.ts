@@ -157,6 +157,8 @@ export type TectureRequest =
   | { id: string; type: "loadNodeDetail"; nodeId: string }
   | { id: string; type: "loadDrift" }
   | { id: string; type: "openFile"; path: string }
+  | { id: string; type: "isOnboardingDismissed" }
+  | { id: string; type: "dismissOnboarding" }
   | {
       id: string;
       type: "saveLayout";
