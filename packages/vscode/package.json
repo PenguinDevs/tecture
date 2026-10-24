@@ -129,6 +129,20 @@
           "markdownDescription": "Edge label outline colour; `null` for no outline.",
           "scope": "window"
         },
+        "tecture.graph.edgeLabel.wrap": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "markdownDescription": "Wrap long edge labels onto multiple lines. Line length is set by `#tecture.graph.edgeLabel.wrapAt#`."
+        },
+        "tecture.graph.edgeLabel.wrapAt": {
+          "type": "integer",
+          "default": 18,
+          "minimum": 4,
+          "maximum": 200,
+          "scope": "window",
+          "markdownDescription": "Maximum characters per line when `#tecture.graph.edgeLabel.wrap#` is on. Breaks at word boundaries; a single longer word is split."
+        },
         "tecture.graph.edge.strokeWidth": {
           "type": "number",
           "default": 1.5,

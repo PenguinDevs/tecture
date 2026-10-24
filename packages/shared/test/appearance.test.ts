@@ -63,6 +63,15 @@ describe("mergeAppearance", () => {
     );
     expect(a.edgeLabel.borderColor).toBeNull();
   });
+
+  it("wraps edge labels at 18 chars by default; wrapAt must be an in-range integer", () => {
+    expect(DEFAULT_APPEARANCE.edgeLabel).toMatchObject({ wrap: true, wrapAt: 18 });
+    expect(mergeAppearance({ edgeLabel: { wrap: false, wrapAt: 30 } }).edgeLabel)
+      .toMatchObject({ wrap: false, wrapAt: 30 });
+    for (const wrapAt of [12.5, 2, 500, "20"]) {
+      expect(mergeAppearance({ edgeLabel: { wrapAt } }).edgeLabel.wrapAt).toBe(18);
+    }
+  });
 });
 
 describe("isCssColor", () => {

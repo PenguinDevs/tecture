@@ -97,11 +97,21 @@ export function FloatingEdge({
           >
             <span
               style={{
+                display: "block",
                 fontSize: edgeLabel.fontSize,
                 color: edgeLabel.textColor,
                 fontWeight: edgeLabel.fontWeight,
                 letterSpacing: "0.04em",
                 fontFamily: "var(--font-mono)",
+                textAlign: "center",
+                ...(edgeLabel.wrap
+                  ? {
+                      // Mono font: 1ch = one character; add the per-char letter-spacing.
+                      maxWidth: `calc(${edgeLabel.wrapAt}ch + ${edgeLabel.wrapAt * 0.04}em)`,
+                      whiteSpace: "normal",
+                      overflowWrap: "anywhere",
+                    }
+                  : { whiteSpace: "nowrap" }),
               }}
             >
               {label}

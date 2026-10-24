@@ -86,6 +86,10 @@ export interface GraphAppearance {
     borderRadius: number;
     /** null = no outline. */
     borderColor: string | null;
+    /** Wrap long labels onto multiple lines instead of one long line. */
+    wrap: boolean;
+    /** Max characters per line when `wrap` is on (CSS `ch` units; breaks at word boundaries). */
+    wrapAt: number;
   };
   edge: {
     strokeWidth: number;
@@ -133,6 +137,8 @@ export const DEFAULT_APPEARANCE: GraphAppearance = {
     paddingY: 4,
     borderRadius: 4,
     borderColor: null,
+    wrap: true,
+    wrapAt: 18,
   },
   edge: {
     strokeWidth: 1.5,
@@ -271,6 +277,8 @@ const SPEC = {
     paddingY: range(0, 32),
     borderRadius: range(0, 32),
     borderColor: colorOrNull,
+    wrap: bool,
+    wrapAt: (v): v is number => Number.isInteger(v) && range(4, 200)(v),
   },
   edge: {
     strokeWidth: range(0.5, 8),
