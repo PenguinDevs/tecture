@@ -134,7 +134,7 @@ export function OnboardingWizard({
             type="button"
             onClick={onClose}
             aria-label="Skip tour"
-            className="ob-btn-close ml-4 flex h-7 w-7 shrink-0 items-center justify-center border"
+            className="ob-btn ml-4 flex h-7 w-7 shrink-0 items-center justify-center border transition-colors"
           >
             <svg
               width="12"
@@ -176,7 +176,7 @@ export function OnboardingWizard({
 
         {/* Footer */}
         <div
-          className="flex items-center justify-between border-t px-6 py-4"
+          className="flex flex-wrap items-center justify-between gap-3 border-t px-6 py-4"
           style={{ borderColor: "var(--border-default)" }}
         >
           <div className="flex items-center gap-4">
@@ -197,7 +197,7 @@ export function OnboardingWizard({
               <button
                 type="button"
                 onClick={onDontShowAgain}
-                className="ob-btn border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase"
+                className="ob-btn whitespace-nowrap border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors"
               >
                 Don't show again
               </button>
@@ -209,7 +209,7 @@ export function OnboardingWizard({
               <button
                 type="button"
                 onClick={back}
-                className="ob-btn border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase"
+                className="ob-btn whitespace-nowrap border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors"
               >
                 Back
               </button>
@@ -217,7 +217,7 @@ export function OnboardingWizard({
             <button
               type="button"
               onClick={next}
-              className="ob-btn-primary border px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase"
+              className="ob-btn-primary whitespace-nowrap border px-4 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors"
             >
               {step === last ? "Got it" : "Next"}
             </button>
