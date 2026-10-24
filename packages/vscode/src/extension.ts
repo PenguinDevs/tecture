@@ -139,6 +139,13 @@ export function activate(context: vscode.ExtensionContext): void {
     vscode.commands.registerCommand("tecture.refresh", fireRefresh),
   );
 
+  context.subscriptions.push(
+    vscode.commands.registerCommand("tecture.resetOnboarding", async () => {
+      await context.workspaceState.update("tecture.onboardingDismissed", false);
+      fireRefresh();
+    }),
+  );
+
   // File watchers track the configured architecture folder plus its layout
   // store (architecture/.tecture); rebuilt whenever the configured path changes.
   let watchers: vscode.Disposable[] = [];
