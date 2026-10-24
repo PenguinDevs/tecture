@@ -26,8 +26,8 @@ export interface ArchitectureBundle {
   missingDescriptions: Set<string>;
   /** Drift report from the evidence script, or null when none exists. */
   drift: DriftReport | null;
-  /** Whether onboarding has been dismissed for this workspace/project. */
-  onboardingDismissed?: boolean;
+  /** Whether the data source reports "Don't show again" for the onboarding tour. */
+  onboardingDismissed: boolean;
 }
 
 export type BundlePhase = "summary" | "diagrams" | "descriptions";
@@ -43,12 +43,20 @@ export type BundleState =
   | { status: "error"; message: string }
   | { status: "ready"; bundle: ArchitectureBundle };
 
+/** Onboarding tour state owned by the provider; read it through useOnboarding. */
+export interface OnboardingSession {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  /** Persist "Don't show again"; undefined when the data source can't. */
+  dismiss?: () => void;
+}
+
 interface ContextValue {
   bundle: ArchitectureBundle;
   saveLayout: (slug: string, update: ApiDiagramLayoutUpdate) => Promise<void>;
   openInEditor?: (path: string) => void;
   reportUsage: (event: string, props?: { level?: number }) => void;
-  dismissOnboarding: () => Promise<void>;
+  onboarding: OnboardingSession;
 }
 
 const ArchitectureBundleContext = createContext<ContextValue | null>(null);
@@ -101,14 +109,14 @@ export function useReportUsage(): (
   return ctx.reportUsage;
 }
 
-export function useDismissOnboarding(): () => Promise<void> {
+export function useOnboardingSession(): OnboardingSession {
   const ctx = useContext(ArchitectureBundleContext);
   if (!ctx) {
     throw new Error(
-      "useDismissOnboarding must be used inside ArchitectureBundleProvider",
+      "useOnboardingSession must be used inside ArchitectureBundleProvider",
     );
   }
-  return ctx.dismissOnboarding;
+  return ctx.onboarding;
 }
 
 export interface ArchitectureBundleProviderProps {
@@ -129,6 +137,14 @@ export function ArchitectureBundleProvider({
     done: 0,
     total: 1,
   });
+
+  // The user's last open/close choice for the onboarding tour, or null before
+  // they make one (then the data source's dismissal decides). It lives here,
+  // not in ArchitectureView, because this provider stays mounted while it
+  // reloads: a file-change refresh must not reopen a tour the user closed.
+  const [onboardingChoice, setOnboardingChoice] = useState<boolean | null>(
+    null,
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -176,26 +192,44 @@ export function ArchitectureBundleProvider({
     },
     [dataSource],
   );
-  const dismissOnboarding = useCallback(async () => {
-    await dataSource.dismissOnboarding?.();
-    setState((prev) => {
-      if (prev.status !== "ready") return prev;
-      return {
-        ...prev,
-        bundle: {
-          ...prev.bundle,
-          onboardingDismissed: true,
-        },
-      };
-    });
-  }, [dataSource]);
 
+  const dismissOnboarding = useMemo(
+    () =>
+      dataSource.dismissOnboarding
+        ? () => {
+            dataSource.dismissOnboarding?.().catch((err) => {
+              console.warn(
+                "[tecture] failed to persist onboarding dismissal",
+                err,
+              );
+            });
+          }
+        : undefined,
+    [dataSource],
+  );
 
   const bundle = state.status === "ready" ? state.bundle : null;
   const contextValue = useMemo<ContextValue | null>(() => {
     if (!bundle) return null;
-    return { bundle, saveLayout, openInEditor, reportUsage, dismissOnboarding };
-  }, [bundle, saveLayout, openInEditor, reportUsage, dismissOnboarding]);
+    return {
+      bundle,
+      saveLayout,
+      openInEditor,
+      reportUsage,
+      onboarding: {
+        open: onboardingChoice ?? !bundle.onboardingDismissed,
+        setOpen: setOnboardingChoice,
+        dismiss: dismissOnboarding,
+      },
+    };
+  }, [
+    bundle,
+    saveLayout,
+    openInEditor,
+    reportUsage,
+    onboardingChoice,
+    dismissOnboarding,
+  ]);
 
   if (state.status !== "ready") {
     return <LoadingSplash state={state} />;
@@ -326,6 +360,7 @@ async function loadBundle({
       onboardingDismissedPromise,
     ]);
     if (isCancelled()) return;
+
     onState({
       status: "ready",
       bundle: {

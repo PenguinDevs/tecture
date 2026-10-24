@@ -1,42 +1,38 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { useOnboardingSession } from "./ArchitectureBundleContext";
 
 export interface Onboarding {
   /** Whether the wizard should currently be shown. */
   open: boolean;
   /** Manually (re)open the tour, e.g. from the help button. */
   openWizard: () => void;
-  /** Dismiss the tour for the current view. */
+  /** Close the tour; it stays closed across reloads until reopened. */
   closeWizard: () => void;
-  /** Dismiss the tour permanently so it won't pop up again automatically. */
-  dismissPermanently: () => void;
-}
-
-export interface UseOnboardingOptions {
-  /** Whether onboarding has already been dismissed for this project. */
-  dismissed?: boolean;
-  /** Callback invoked when the user chooses "Don't show again" or finishes the tour. */
-  onDismiss?: () => void;
+  /**
+   * Close the tour and persist "Don't show again" for this project. Undefined
+   * when the data source can't persist it, which hides the button.
+   */
+  dismissPermanently?: () => void;
 }
 
 /**
- * Onboarding tour state. By default, the wizard opens on first run unless already
- * dismissed for the workspace/project. `openWizard` lets the help button replay
- * it on demand, and `dismissPermanently` marks it dismissed so it won't auto-open
- * on subsequent reloads.
+ * Onboarding tour state. The tour opens when the viewer loads unless the data
+ * source reports it dismissed. ArchitectureBundleProvider keeps the user's
+ * open/close choice, so a reload never reopens a tour the user closed, and
+ * `openWizard` lets the help button replay it on demand.
  */
-export function useOnboarding(
-  options?: UseOnboardingOptions | boolean,
-): Onboarding {
-  const dismissed = typeof options === "boolean" ? options : options?.dismissed;
-  const onDismiss = typeof options === "object" ? options?.onDismiss : undefined;
-
-  const [open, setOpen] = useState(() => !dismissed);
-  const openWizard = useCallback(() => setOpen(true), []);
-  const closeWizard = useCallback(() => setOpen(false), []);
-  const dismissPermanently = useCallback(() => {
-    onDismiss?.();
-    setOpen(false);
-  }, [onDismiss]);
-
+export function useOnboarding(): Onboarding {
+  const { open, setOpen, dismiss } = useOnboardingSession();
+  const openWizard = useCallback(() => setOpen(true), [setOpen]);
+  const closeWizard = useCallback(() => setOpen(false), [setOpen]);
+  const dismissPermanently = useMemo(
+    () =>
+      dismiss &&
+      (() => {
+        dismiss();
+        setOpen(false);
+      }),
+    [dismiss, setOpen],
+  );
   return { open, openWizard, closeWizard, dismissPermanently };
 }

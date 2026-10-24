@@ -14,6 +14,7 @@ interface Step {
 interface Props {
   open: boolean;
   onClose: () => void;
+  /** Persist "Don't show again" and close; the button is hidden when omitted. */
   onDontShowAgain?: () => void;
   architectureName: string;
   architectureDescription?: string;
@@ -71,10 +72,6 @@ export function OnboardingWizard({
     }
     setStep((s) => Math.min(last, s + 1));
   }, [step, last, onClose, onDontShowAgain]);
-  const handleDontShowAgain = useCallback(() => {
-    onDontShowAgain?.();
-    onClose();
-  }, [onDontShowAgain, onClose]);
   const back = useCallback(() => setStep((s) => Math.max(0, s - 1)), []);
 
   useEffect(() => {
@@ -200,7 +197,7 @@ export function OnboardingWizard({
             {onDontShowAgain && (
               <button
                 type="button"
-                onClick={handleDontShowAgain}
+                onClick={onDontShowAgain}
                 className="ob-btn border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase"
               >
                 Don't show again

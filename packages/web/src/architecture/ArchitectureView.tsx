@@ -8,9 +8,9 @@ import { OnboardingWizard } from "./OnboardingWizard";
 import { useOnboarding } from "./useOnboarding";
 import {
   useArchitectureBundle,
-  useDismissOnboarding,
   useReportUsage,
 } from "./ArchitectureBundleContext";
+
 interface Props {
   diagramId: string | null;
   showDiagramList?: boolean;
@@ -23,12 +23,9 @@ let lastReportedDiagram: string | null = null;
 export function ArchitectureView({ diagramId, showDiagramList = true }: Props) {
   const bundle = useArchitectureBundle();
   const reportUsage = useReportUsage();
-  const dismissOnboarding = useDismissOnboarding();
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const onboarding = useOnboarding({
-    dismissed: bundle.onboardingDismissed,
-    onDismiss: dismissOnboarding,
-  });
+  const onboarding = useOnboarding();
+
   useEffect(() => {
     if (diagramId) return;
     window.location.hash = `#/diagram/${bundle.summary.topDiagram}`;
