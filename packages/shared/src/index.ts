@@ -172,7 +172,9 @@ export type TectureResponse =
 
 export type TectureEvent =
   | { type: "refresh" }
-  | { type: "selectDiagram"; slug: string };
+  | { type: "selectDiagram"; slug: string }
+  // Reopen the onboarding tour, e.g. after the host resets "Don't show again".
+  | { type: "showOnboarding" };
 
 export type TectureNotification =
   | { type: "ready" }

@@ -142,7 +142,8 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand("tecture.resetOnboarding", async () => {
       await context.workspaceState.update("tecture.onboardingDismissed", false);
-      fireRefresh();
+      // Reopen the tour in place; a refresh would reload the whole architecture.
+      TecturePanel.current?.postEvent({ type: "showOnboarding" });
     }),
   );
 

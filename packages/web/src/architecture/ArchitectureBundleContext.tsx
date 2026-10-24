@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -124,12 +125,15 @@ export interface ArchitectureBundleProviderProps {
   children: ReactNode;
   /** Forces a reload when the value changes. */
   reloadKey?: unknown;
+  /** Opens the onboarding tour when the value changes. */
+  showOnboardingKey?: unknown;
 }
 
 export function ArchitectureBundleProvider({
   dataSource,
   children,
   reloadKey,
+  showOnboardingKey,
 }: ArchitectureBundleProviderProps) {
   const [state, setState] = useState<BundleState>({
     status: "loading",
@@ -145,6 +149,15 @@ export function ArchitectureBundleProvider({
   const [onboardingChoice, setOnboardingChoice] = useState<boolean | null>(
     null,
   );
+
+  // A changed showOnboardingKey (e.g. the host's reset command) reopens the
+  // tour, even mid-reload. The initial value is ignored.
+  const lastShowOnboardingKey = useRef(showOnboardingKey);
+  useEffect(() => {
+    if (Object.is(showOnboardingKey, lastShowOnboardingKey.current)) return;
+    lastShowOnboardingKey.current = showOnboardingKey;
+    setOnboardingChoice(true);
+  }, [showOnboardingKey]);
 
   useEffect(() => {
     let cancelled = false;
