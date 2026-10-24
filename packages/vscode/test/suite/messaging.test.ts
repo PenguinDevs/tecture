@@ -176,4 +176,45 @@ suite("handleRequest", () => {
       useTrash: false,
     });
   });
+
+  test("isOnboardingDismissed delegates to deps and defaults to false", async () => {
+    let checked = false;
+    const d = {
+      ...deps(),
+      isOnboardingDismissed: () => {
+        checked = true;
+        return true;
+      },
+    };
+    const res = await handleRequest(
+      { id: "10", type: "isOnboardingDismissed" },
+      d,
+    );
+    assert.strictEqual(res.ok, true);
+    assert.strictEqual(res.data, true);
+    assert.strictEqual(checked, true);
+
+    const defaultRes = await handleRequest(
+      { id: "11", type: "isOnboardingDismissed" },
+      deps(),
+    );
+    assert.strictEqual(defaultRes.ok, true);
+    assert.strictEqual(defaultRes.data, false);
+  });
+
+  test("dismissOnboarding invokes deps.dismissOnboarding", async () => {
+    let dismissed = false;
+    const d = {
+      ...deps(),
+      dismissOnboarding: () => {
+        dismissed = true;
+      },
+    };
+    const res = await handleRequest(
+      { id: "12", type: "dismissOnboarding" },
+      d,
+    );
+    assert.strictEqual(res.ok, true);
+    assert.strictEqual(dismissed, true);
+  });
 });

@@ -18,6 +18,10 @@ export interface MessageDeps {
   openFile?: (path: string) => Promise<void>;
   /** Load the evidence script's drift report, or null when none exists. */
   loadDrift?: () => Promise<DriftReport | null>;
+  /** Check if onboarding tour has been dismissed for this project. */
+  isOnboardingDismissed?: () => Promise<boolean> | boolean;
+  /** Dismiss the onboarding tour for this project. */
+  dismissOnboarding?: () => Promise<void> | void;
 }
 
 export async function handleRequest(
@@ -75,6 +79,18 @@ export async function handleRequest(
           };
         }
         await deps.openFile(req.path);
+        return { id: req.id, ok: true, data: null };
+      }
+      case "isOnboardingDismissed": {
+        const data = deps.isOnboardingDismissed
+          ? await deps.isOnboardingDismissed()
+          : false;
+        return { id: req.id, ok: true, data };
+      }
+      case "dismissOnboarding": {
+        if (deps.dismissOnboarding) {
+          await deps.dismissOnboarding();
+        }
         return { id: req.id, ok: true, data: null };
       }
     }

@@ -57,12 +57,20 @@ async function openFileInWorkspace(
   }
 }
 
-function buildDeps(folder: vscode.WorkspaceFolder): MessageDeps {
+function buildDeps(
+  folder: vscode.WorkspaceFolder,
+  context: vscode.ExtensionContext,
+): MessageDeps {
   return {
     source: new VscodeFsArchitectureDataSource(resolveArchitectureRoot(folder)),
     layouts: new VscodeFsLayoutStore(resolveLayoutsRoot(folder)),
     openFile: (path) => openFileInWorkspace(folder, path),
     loadDrift: () => readWorkspaceDrift(resolveArchitectureRoot(folder)),
+    isOnboardingDismissed: () =>
+      context.workspaceState.get<boolean>("tecture.onboardingDismissed", false),
+    dismissOnboarding: async () => {
+      await context.workspaceState.update("tecture.onboardingDismissed", true);
+    },
   };
 }
 
@@ -84,7 +92,7 @@ export function activate(context: vscode.ExtensionContext): void {
     return;
   }
 
-  activeDeps = buildDeps(folder);
+  activeDeps = buildDeps(folder, context);
 
   const treeProvider = new TectureTreeDataProvider(activeDeps.source);
   const treeView = vscode.window.createTreeView("tectureDiagrams", {
@@ -178,7 +186,7 @@ export function activate(context: vscode.ExtensionContext): void {
       if (!e.affectsConfiguration("tecture.architecturePath")) return;
       const target = getWorkspaceFolder();
       if (!target) return;
-      activeDeps = buildDeps(target);
+      activeDeps = buildDeps(target, context);
       treeProvider.setSource(activeDeps.source);
       TecturePanel.current?.setDeps(activeDeps);
       disposeWatchers();
@@ -195,7 +203,7 @@ export function activate(context: vscode.ExtensionContext): void {
         disposeWatchers();
         return;
       }
-      activeDeps = buildDeps(next);
+      activeDeps = buildDeps(next, context);
       treeProvider.setSource(activeDeps.source);
       TecturePanel.current?.setDeps(activeDeps);
       disposeWatchers();
