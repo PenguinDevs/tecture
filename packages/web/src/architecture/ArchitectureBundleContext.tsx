@@ -26,6 +26,8 @@ export interface ArchitectureBundle {
   missingDescriptions: Set<string>;
   /** Drift report from the evidence script, or null when none exists. */
   drift: DriftReport | null;
+  /** Whether onboarding has been dismissed for this workspace/project. */
+  onboardingDismissed?: boolean;
 }
 
 export type BundlePhase = "summary" | "diagrams" | "descriptions";
@@ -46,6 +48,7 @@ interface ContextValue {
   saveLayout: (slug: string, update: ApiDiagramLayoutUpdate) => Promise<void>;
   openInEditor?: (path: string) => void;
   reportUsage: (event: string, props?: { level?: number }) => void;
+  dismissOnboarding: () => Promise<void>;
 }
 
 const ArchitectureBundleContext = createContext<ContextValue | null>(null);
@@ -96,6 +99,16 @@ export function useReportUsage(): (
     );
   }
   return ctx.reportUsage;
+}
+
+export function useDismissOnboarding(): () => Promise<void> {
+  const ctx = useContext(ArchitectureBundleContext);
+  if (!ctx) {
+    throw new Error(
+      "useDismissOnboarding must be used inside ArchitectureBundleProvider",
+    );
+  }
+  return ctx.dismissOnboarding;
 }
 
 export interface ArchitectureBundleProviderProps {
@@ -163,12 +176,26 @@ export function ArchitectureBundleProvider({
     },
     [dataSource],
   );
+  const dismissOnboarding = useCallback(async () => {
+    await dataSource.dismissOnboarding?.();
+    setState((prev) => {
+      if (prev.status !== "ready") return prev;
+      return {
+        ...prev,
+        bundle: {
+          ...prev.bundle,
+          onboardingDismissed: true,
+        },
+      };
+    });
+  }, [dataSource]);
+
 
   const bundle = state.status === "ready" ? state.bundle : null;
   const contextValue = useMemo<ContextValue | null>(() => {
     if (!bundle) return null;
-    return { bundle, saveLayout, openInEditor, reportUsage };
-  }, [bundle, saveLayout, openInEditor, reportUsage]);
+    return { bundle, saveLayout, openInEditor, reportUsage, dismissOnboarding };
+  }, [bundle, saveLayout, openInEditor, reportUsage, dismissOnboarding]);
 
   if (state.status !== "ready") {
     return <LoadingSplash state={state} />;
@@ -200,6 +227,10 @@ async function loadBundle({
     const driftPromise: Promise<DriftReport | null> = dataSource.loadDrift
       ? dataSource.loadDrift().catch(() => null)
       : Promise.resolve(null);
+    const onboardingDismissedPromise: Promise<boolean> =
+      dataSource.isOnboardingDismissed
+        ? dataSource.isOnboardingDismissed().catch(() => false)
+        : Promise.resolve(false);
     const summary = await dataSource.loadSummary();
     if (isCancelled()) return;
 
@@ -290,9 +321,11 @@ async function loadBundle({
     );
     if (isCancelled()) return;
 
-    const drift = await driftPromise;
+    const [drift, onboardingDismissed] = await Promise.all([
+      driftPromise,
+      onboardingDismissedPromise,
+    ]);
     if (isCancelled()) return;
-
     onState({
       status: "ready",
       bundle: {
@@ -302,6 +335,7 @@ async function loadBundle({
         nodes,
         missingDescriptions: missing,
         drift,
+        onboardingDismissed,
       },
     });
   } catch (err) {

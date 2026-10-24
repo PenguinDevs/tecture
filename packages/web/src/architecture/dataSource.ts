@@ -35,6 +35,14 @@ export interface WebDataSource {
    * slugs, names, or content. Optional; the viewer works fine without it.
    */
   reportUsage?(event: string, props?: { level?: number }): void;
+  /**
+   * Check whether onboarding has been dismissed for this workspace/project.
+   */
+  isOnboardingDismissed?(): Promise<boolean>;
+  /**
+   * Persistently dismiss onboarding for this workspace/project.
+   */
+  dismissOnboarding?(): Promise<void>;
 }
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -107,6 +115,23 @@ export function createHttpDataSource(baseUrl = ""): WebDataSource {
         throw new Error(body?.message ?? `HTTP ${res.status} saving layout`);
       }
       return (await res.json()) as DiagramLayoutFile;
+    },
+    isOnboardingDismissed: async () => {
+      try {
+        return (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("tecture:onboarding-dismissed") === "true"
+        );
+      } catch {
+        return false;
+      }
+    },
+    dismissOnboarding: async () => {
+      try {
+        if (typeof localStorage !== "undefined") {
+          localStorage.setItem("tecture:onboarding-dismissed", "true");
+        }
+      } catch {}
     },
   };
 }

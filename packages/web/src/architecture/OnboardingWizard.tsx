@@ -14,6 +14,7 @@ interface Step {
 interface Props {
   open: boolean;
   onClose: () => void;
+  onDontShowAgain?: () => void;
   architectureName: string;
   architectureDescription?: string;
 }
@@ -21,6 +22,7 @@ interface Props {
 export function OnboardingWizard({
   open,
   onClose,
+  onDontShowAgain,
   architectureName,
   architectureDescription,
 }: Props) {
@@ -62,14 +64,17 @@ export function OnboardingWizard({
 
   const last = steps.length - 1;
   const next = useCallback(() => {
-    setStep((s) => {
-      if (s >= steps.length - 1) {
-        onClose();
-        return s;
-      }
-      return s + 1;
-    });
-  }, [steps.length, onClose]);
+    if (step >= last) {
+      onDontShowAgain?.();
+      onClose();
+      return;
+    }
+    setStep((s) => Math.min(last, s + 1));
+  }, [step, last, onClose, onDontShowAgain]);
+  const handleDontShowAgain = useCallback(() => {
+    onDontShowAgain?.();
+    onClose();
+  }, [onDontShowAgain, onClose]);
   const back = useCallback(() => setStep((s) => Math.max(0, s - 1)), []);
 
   useEffect(() => {
@@ -183,18 +188,35 @@ export function OnboardingWizard({
           className="flex items-center justify-between border-t px-6 py-4"
           style={{ borderColor: "var(--border-default)" }}
         >
-          <div className="flex items-center gap-2">
-            {steps.map((s, i) => (
-              <span
-                key={s.title}
-                className="h-1.5 rounded-full transition-all"
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {steps.map((s, i) => (
+                <span
+                  key={s.title}
+                  className="h-1.5 rounded-full transition-all"
+                  style={{
+                    width: i === step ? "18px" : "6px",
+                    backgroundColor:
+                      i === step ? "var(--accent-cyan)" : "var(--border-default)",
+                  }}
+                />
+              ))}
+            </div>
+            {onDontShowAgain && (
+              <button
+                type="button"
+                onClick={handleDontShowAgain}
+                className="border px-3 py-1.5 text-[10px] tracking-[0.2em] uppercase transition-colors hover:text-white"
                 style={{
-                  width: i === step ? "18px" : "6px",
-                  backgroundColor:
-                    i === step ? "var(--accent-cyan)" : "var(--border-default)",
+                  borderColor: "var(--border-default)",
+                  color: "var(--text-muted)",
+                  fontFamily: "var(--font-mono)",
+                  backgroundColor: "transparent",
                 }}
-              />
-            ))}
+              >
+                Don't show again
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-2">

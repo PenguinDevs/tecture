@@ -8,9 +8,9 @@ import { OnboardingWizard } from "./OnboardingWizard";
 import { useOnboarding } from "./useOnboarding";
 import {
   useArchitectureBundle,
+  useDismissOnboarding,
   useReportUsage,
 } from "./ArchitectureBundleContext";
-
 interface Props {
   diagramId: string | null;
   showDiagramList?: boolean;
@@ -23,9 +23,12 @@ let lastReportedDiagram: string | null = null;
 export function ArchitectureView({ diagramId, showDiagramList = true }: Props) {
   const bundle = useArchitectureBundle();
   const reportUsage = useReportUsage();
+  const dismissOnboarding = useDismissOnboarding();
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const onboarding = useOnboarding();
-
+  const onboarding = useOnboarding({
+    dismissed: bundle.onboardingDismissed,
+    onDismiss: dismissOnboarding,
+  });
   useEffect(() => {
     if (diagramId) return;
     window.location.hash = `#/diagram/${bundle.summary.topDiagram}`;
@@ -96,6 +99,7 @@ export function ArchitectureView({ diagramId, showDiagramList = true }: Props) {
       <OnboardingWizard
         open={onboarding.open}
         onClose={onboarding.closeWizard}
+        onDontShowAgain={onboarding.dismissPermanently}
         architectureName={bundle.summary.name}
         architectureDescription={bundle.summary.description}
       />
