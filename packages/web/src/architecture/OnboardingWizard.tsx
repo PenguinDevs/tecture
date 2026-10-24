@@ -66,12 +66,11 @@ export function OnboardingWizard({
   const last = steps.length - 1;
   const next = useCallback(() => {
     if (step >= last) {
-      onDontShowAgain?.();
       onClose();
       return;
     }
     setStep((s) => Math.min(last, s + 1));
-  }, [step, last, onClose, onDontShowAgain]);
+  }, [step, last, onClose]);
   const back = useCallback(() => setStep((s) => Math.max(0, s - 1)), []);
 
   useEffect(() => {
