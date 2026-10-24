@@ -50,6 +50,648 @@
           "default": "architecture",
           "scope": "resource",
           "markdownDescription": "Path to the architecture folder (the one containing `manifest.json`), relative to the workspace folder root. Defaults to `architecture`."
+        },
+        "tecture.graph.edgeLabel.visible": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show labels on edges.",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.backgroundColor": {
+          "type": "string",
+          "format": "color",
+          "default": "#0a0f1a",
+          "markdownDescription": "Edge label box fill. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.backgroundOpacity": {
+          "type": "number",
+          "default": 0.92,
+          "minimum": 0,
+          "maximum": 1,
+          "markdownDescription": "Edge label box opacity (0 = transparent, 1 = opaque). Multiplies any alpha already in `backgroundColor`.",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.textColor": {
+          "type": "string",
+          "format": "color",
+          "default": "#94a3b8",
+          "markdownDescription": "Edge label text colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.fontSize": {
+          "type": "number",
+          "default": 10,
+          "minimum": 6,
+          "maximum": 32,
+          "markdownDescription": "Edge label font size (px).",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.fontWeight": {
+          "type": "number",
+          "default": 500,
+          "minimum": 100,
+          "maximum": 900,
+          "markdownDescription": "Edge label font weight (100–900).",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.paddingX": {
+          "type": "number",
+          "default": 6,
+          "minimum": 0,
+          "maximum": 32,
+          "markdownDescription": "Edge label horizontal padding (px).",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.paddingY": {
+          "type": "number",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 32,
+          "markdownDescription": "Edge label vertical padding (px).",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.borderRadius": {
+          "type": "number",
+          "default": 4,
+          "minimum": 0,
+          "maximum": 32,
+          "markdownDescription": "Edge label corner radius (px).",
+          "scope": "window"
+        },
+        "tecture.graph.edgeLabel.borderColor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "color",
+          "default": null,
+          "markdownDescription": "Edge label outline colour; `null` for no outline.",
+          "scope": "window"
+        },
+        "tecture.graph.edge.strokeWidth": {
+          "type": "number",
+          "default": 1.5,
+          "minimum": 0.5,
+          "maximum": 8,
+          "markdownDescription": "Edge line width (px).",
+          "scope": "window"
+        },
+        "tecture.graph.edge.dashPattern": {
+          "type": "string",
+          "default": "5 5",
+          "pattern": "^\\d+(\\.\\d+)?([\\s,]+\\d+(\\.\\d+)?)*$",
+          "markdownDescription": "SVG dash pattern for edge types whose `dashed` is true (see `#tecture.graph.edgeTypes#`). A type's `dashed` decides *whether*; this decides *how*.",
+          "scope": "window"
+        },
+        "tecture.graph.edge.arrowSize": {
+          "type": "number",
+          "default": 16,
+          "minimum": 4,
+          "maximum": 48,
+          "markdownDescription": "Arrowhead size.",
+          "scope": "window"
+        },
+        "tecture.graph.edge.cornerRadius": {
+          "type": "number",
+          "default": 8,
+          "minimum": 0,
+          "maximum": 64,
+          "markdownDescription": "Bend radius of stepped edges (px).",
+          "scope": "window"
+        },
+        "tecture.graph.edge.animation": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "always",
+            "never"
+          ],
+          "default": "auto",
+          "markdownDescription": "Edge flow animation. `auto` uses each edge type's `animated` flag; `always`/`never` override every type.",
+          "enumDescriptions": [
+            "Per edge type",
+            "Animate all edges",
+            "Animate no edges"
+          ],
+          "scope": "window"
+        },
+        "tecture.graph.node.minWidth": {
+          "type": "number",
+          "default": 160,
+          "minimum": 60,
+          "maximum": 600,
+          "markdownDescription": "Minimum node width (px).",
+          "scope": "window"
+        },
+        "tecture.graph.node.labelFontSize": {
+          "type": "number",
+          "default": 13,
+          "minimum": 8,
+          "maximum": 32,
+          "markdownDescription": "Node label font size (px).",
+          "scope": "window"
+        },
+        "tecture.graph.node.technologyFontSize": {
+          "type": "number",
+          "default": 9,
+          "minimum": 6,
+          "maximum": 24,
+          "markdownDescription": "Node technology tag font size (px).",
+          "scope": "window"
+        },
+        "tecture.graph.node.borderRadius": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "maximum": 32,
+          "markdownDescription": "Node and container corner radius (px).",
+          "scope": "window"
+        },
+        "tecture.graph.node.showIcons": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show node type icons.",
+          "scope": "window"
+        },
+        "tecture.graph.node.showCornerMarks": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show blueprint corner marks on nodes.",
+          "scope": "window"
+        },
+        "tecture.graph.container.backgroundOpacity": {
+          "type": "number",
+          "default": 0.03,
+          "minimum": 0,
+          "maximum": 1,
+          "markdownDescription": "Opacity of the accent tint filling container nodes.",
+          "scope": "window"
+        },
+        "tecture.graph.container.headerOpacity": {
+          "type": "number",
+          "default": 0.9,
+          "minimum": 0,
+          "maximum": 1,
+          "markdownDescription": "Opacity of the container header bar.",
+          "scope": "window"
+        },
+        "tecture.graph.container.borderStyle": {
+          "type": "string",
+          "enum": [
+            "dashed",
+            "solid",
+            "dotted"
+          ],
+          "default": "dashed",
+          "markdownDescription": "Container border style.",
+          "scope": "window"
+        },
+        "tecture.graph.container.borderWidth": {
+          "type": "number",
+          "default": 1.5,
+          "minimum": 0,
+          "maximum": 8,
+          "markdownDescription": "Container border width (px).",
+          "scope": "window"
+        },
+        "tecture.graph.canvas.backgroundColor": {
+          "type": "string",
+          "format": "color",
+          "default": "#0a0f1a",
+          "markdownDescription": "Canvas background colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "scope": "window"
+        },
+        "tecture.graph.canvas.grid": {
+          "type": "string",
+          "enum": [
+            "lines",
+            "dots",
+            "cross",
+            "none"
+          ],
+          "default": "lines",
+          "markdownDescription": "Canvas grid pattern.",
+          "scope": "window"
+        },
+        "tecture.graph.canvas.gridGap": {
+          "type": "number",
+          "default": 20,
+          "minimum": 4,
+          "maximum": 200,
+          "markdownDescription": "Canvas grid spacing (px).",
+          "scope": "window"
+        },
+        "tecture.graph.canvas.gridColor": {
+          "type": "string",
+          "format": "color",
+          "default": "rgba(34, 78, 130, 0.12)",
+          "markdownDescription": "Canvas grid colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "scope": "window"
+        },
+        "tecture.graph.minimap.visible": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show the minimap.",
+          "scope": "window"
+        },
+        "tecture.graph.minimap.nodeColor": {
+          "type": "string",
+          "format": "color",
+          "default": "#22d3ee",
+          "markdownDescription": "Minimap node colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "scope": "window"
+        },
+        "tecture.graph.minimap.maskColor": {
+          "type": "string",
+          "format": "color",
+          "default": "rgba(10, 15, 26, 0.7)",
+          "markdownDescription": "Minimap viewport mask colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "scope": "window"
+        },
+        "tecture.graph.controls.visible": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show zoom controls.",
+          "scope": "window"
+        },
+        "tecture.graph.legend.visible": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show the legend.",
+          "scope": "window"
+        },
+        "tecture.graph.nodeTypes": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": false,
+          "markdownDescription": "Per node type colour overrides, e.g. `{ \"database\": { \"accent\": \"#22c55e\" } }`. Unset fields keep the built-in colour. `default` applies to nodes without a known type.",
+          "properties": {
+            "system": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "person": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "service": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "database": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "queue": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "gateway": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "frontend": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "cache": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "storage": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "external": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            },
+            "default": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "border": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "accent": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "text": {
+                  "type": "string",
+                  "format": "color"
+                }
+              }
+            }
+          },
+          "scope": "window"
+        },
+        "tecture.graph.edgeTypes": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": false,
+          "markdownDescription": "Per edge type overrides, e.g. `{ \"calls\": { \"color\": \"#f472b6\", \"dashed\": true } }`. Unset fields keep the built-in value. `animated` only applies when `#tecture.graph.edge.animation#` is `auto`.",
+          "properties": {
+            "calls": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "dashed": {
+                  "type": "boolean"
+                },
+                "animated": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "data-flow": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "dashed": {
+                  "type": "boolean"
+                },
+                "animated": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "publishes": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "dashed": {
+                  "type": "boolean"
+                },
+                "animated": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "subscribes": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "dashed": {
+                  "type": "boolean"
+                },
+                "animated": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "reads": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "dashed": {
+                  "type": "boolean"
+                },
+                "animated": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "writes": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "dashed": {
+                  "type": "boolean"
+                },
+                "animated": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "default": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "color": {
+                  "type": "string",
+                  "format": "color"
+                },
+                "dashed": {
+                  "type": "boolean"
+                },
+                "animated": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "scope": "window"
         }
       }
     },
