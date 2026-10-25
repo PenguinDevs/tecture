@@ -1,10 +1,16 @@
 import {
   EdgeLabelRenderer,
   getSmoothStepPath,
+  Position,
   useInternalNode,
+  type Edge,
   type EdgeProps,
 } from "@xyflow/react";
 import { getEdgeParams } from "./utils";
+import type { ArchEdgeData } from "../transform";
+
+/** Distance between the lines of edges that join the same two nodes. */
+const PARALLEL_SPACING = 14;
 
 export function FloatingEdge({
   id,
@@ -18,7 +24,8 @@ export function FloatingEdge({
   labelBgPadding,
   labelBgBorderRadius,
   animated,
-}: EdgeProps) {
+  data,
+}: EdgeProps<Edge<ArchEdgeData>>) {
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
@@ -29,14 +36,32 @@ export function FloatingEdge({
     targetNode,
   );
 
+  // Same absolute shift on both ends for every edge of the pair, whichever
+  // way it points, so A→B and B→A run on separate lines. The middle segment
+  // of the step moves perpendicular to the turn so the lines never cross.
+  const parallelIndex = data?.parallelIndex ?? 0;
+  const parallelCount = data?.parallelCount ?? 1;
+  const shift = (parallelIndex - (parallelCount - 1) / 2) * PARALLEL_SPACING;
+  const midShift = -shift * Math.sign((tx - sx) * (ty - sy));
+  const horizontal =
+    sourcePos === Position.Left || sourcePos === Position.Right;
+  const [dx, dy] = horizontal ? [0, shift] : [shift, 0];
+  const sX = sx + dx;
+  const sY = sy + dy;
+  const tX = tx + dx;
+  const tY = ty + dy;
+
   const [edgePath, labelX, labelY] = getSmoothStepPath({
-    sourceX: sx,
-    sourceY: sy,
+    sourceX: sX,
+    sourceY: sY,
     sourcePosition: sourcePos,
     targetPosition: targetPos,
-    targetX: tx,
-    targetY: ty,
+    targetX: tX,
+    targetY: tY,
     borderRadius: 8,
+    ...(horizontal
+      ? { centerX: (sX + tX) / 2 + midShift }
+      : { centerY: (sY + tY) / 2 + midShift }),
   });
 
   return (
