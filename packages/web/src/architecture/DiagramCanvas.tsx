@@ -208,7 +208,6 @@ function DiagramCanvasInner({ diagramId, onSelectNode, onDrillIn }: Props) {
           <Background
             variant={BACKGROUND_VARIANT[appearance.canvas.grid]}
             gap={appearance.canvas.gridGap}
-            size={1}
             color={appearance.canvas.gridColor}
             bgColor={appearance.canvas.backgroundColor}
           />
