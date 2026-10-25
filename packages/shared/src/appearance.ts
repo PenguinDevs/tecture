@@ -130,7 +130,7 @@ export const DEFAULT_APPEARANCE: GraphAppearance = {
     visible: true,
     backgroundColor: "#0a0f1a",
     backgroundOpacity: 0.92,
-    textColor: "#94a3b8",
+    textColor: "#e2e8f0",
     fontSize: 10,
     fontWeight: 500,
     paddingX: 6,

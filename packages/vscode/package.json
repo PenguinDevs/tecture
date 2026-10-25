@@ -75,7 +75,7 @@
         "tecture.graph.edgeLabel.textColor": {
           "type": "string",
           "format": "color",
-          "default": "#94a3b8",
+          "default": "#e2e8f0",
           "markdownDescription": "Edge label text colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
           "scope": "window"
         },
