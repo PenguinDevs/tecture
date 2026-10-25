@@ -61,7 +61,7 @@ Every visual knob lives under `tecture.graph.*` in your settings (UI or `setting
 
 ```jsonc
 {
-  "tecture.graph.edgeLabel.backgroundOpacity": 0.5,
+  "tecture.graph.edgeLabel.backgroundOpacity": 0.8,
   "tecture.graph.edgeLabel.backgroundColor": "#1e293b",
   "tecture.graph.edgeLabel.wrap": true,
   "tecture.graph.edgeLabel.wrapAt": 24,

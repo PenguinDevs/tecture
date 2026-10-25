@@ -69,7 +69,7 @@
         },
         "tecture.graph.edgeLabel.backgroundOpacity": {
           "type": "number",
-          "default": 0.92,
+          "default": 0.5,
           "minimum": 0,
           "maximum": 1,
           "markdownDescription": "Edge label box opacity (0 = transparent, 1 = opaque). Multiplies any alpha already in `backgroundColor`.",

@@ -14,6 +14,12 @@ All notable changes to the Tecture VS Code extension are documented here.
   accept hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name, and the
   Settings UI flags malformed ones.
 
+### Changed
+
+- Edge label boxes are now 50% opaque by default (was 92%), so edges behind
+  a label stay visible. Set `tecture.graph.edgeLabel.backgroundOpacity` to
+  `0.92` for the previous look.
+
 ### Fixed
 
 - The extension test suite ran 0 tests on Windows (test bundles were emitted
