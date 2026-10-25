@@ -269,3 +269,11 @@ export function LabelObstacleSync({ store }: { store: LabelLayoutStore }) {
   useEffect(() => store.setObstacles(rects), [store, rects]);
   return null;
 }
+
+/** Arrow glyph pointing along `angle` (screen coordinates, y down). */
+export function directionGlyph(angle: number): string {
+  const dx = Math.cos(angle);
+  const dy = Math.sin(angle);
+  if (Math.abs(dx) >= Math.abs(dy)) return dx >= 0 ? "→" : "←";
+  return dy >= 0 ? "↓" : "↑";
+}
