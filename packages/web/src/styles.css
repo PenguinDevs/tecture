@@ -201,13 +201,8 @@ body {
 }
 
 .react-flow__minimap-node {
-  fill: #22d3ee;
   stroke: #1e2d4a;
   stroke-width: 1;
-}
-
-.react-flow__minimap-mask {
-  fill: rgba(10, 15, 26, 0.7);
 }
 
 .react-flow__edge-text {

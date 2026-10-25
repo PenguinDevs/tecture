@@ -11,6 +11,7 @@ import {
 import { getNodeStyle, type IconPath, type NodeStyle } from "./nodeStyles";
 import { useAppearance, withAlpha } from "./AppearanceContext";
 import type { ArchNodeData } from "./transform";
+import type { GraphAppearance } from "@tecture/shared";
 import { useActiveHandleSides } from "./hooks/useActiveHandleSides";
 import { LayoutPersistenceContext } from "./LayoutPersistenceContext";
 
@@ -60,7 +61,7 @@ function ArchitectureNodeInner({ data, selected }: NodeProps) {
         ["--tw-ring-color" as string]: d.hasSubDiagram ? style.accent : undefined,
       } as React.CSSProperties}
     >
-      {nodeOpts.showCornerMarks && <CornerMarks accent={style.accent} />}
+      {showCornerMarks(nodeOpts) && <CornerMarks accent={style.accent} />}
 
       {HANDLE_SIDES.map(({ position, prefix }) => {
         const isActive = activeSides.has(position);
@@ -194,7 +195,7 @@ function ContainerNode({ d, style, selected, activeSides, onDrillDown }: Contain
           boxShadow: `0 0 0 1px ${style.accent}`,
         }}
       />
-      {nodeOpts.showCornerMarks && <CornerMarks accent={style.accent} />}
+      {showCornerMarks(nodeOpts) && <CornerMarks accent={style.accent} />}
 
       {HANDLE_SIDES.map(({ position, prefix }) => {
         const isActive = activeSides.has(position);
@@ -295,6 +296,11 @@ function NodeIcon({
       ))}
     </svg>
   );
+}
+
+/** The square marks sit on the box corners, so a rounded box would leave them sticking out. */
+function showCornerMarks(opts: GraphAppearance["node"]): boolean {
+  return opts.showCornerMarks && opts.borderRadius === 0;
 }
 
 function CornerMarks({ accent }: { accent: string }) {

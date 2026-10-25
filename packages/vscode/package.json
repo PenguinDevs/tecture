@@ -60,7 +60,7 @@
         "tecture.graph.edgeLabel.backgroundColor": {
           "type": "string",
           "format": "color",
-          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
           "maxLength": 64,
           "default": "#0a0f1a",
@@ -78,7 +78,7 @@
         "tecture.graph.edgeLabel.textColor": {
           "type": "string",
           "format": "color",
-          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
           "maxLength": 64,
           "default": "#e2e8f0",
@@ -131,7 +131,7 @@
             "null"
           ],
           "format": "color",
-          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
           "maxLength": 64,
           "default": null,
@@ -150,7 +150,7 @@
           "minimum": 4,
           "maximum": 200,
           "scope": "window",
-          "markdownDescription": "Maximum characters per line when `#tecture.graph.edgeLabel.wrap#` is on. Breaks at word boundaries; a single longer word is split."
+          "markdownDescription": "Maximum characters per line when `#tecture.graph.edgeLabel.wrap#` is on, measured in Latin characters: CJK text and emoji are about twice as wide, so they wrap at roughly half this many. Breaks at word boundaries; a single longer word is split."
         },
         "tecture.graph.edge.strokeWidth": {
           "type": "number",
@@ -163,7 +163,7 @@
         "tecture.graph.edge.dashPattern": {
           "type": "string",
           "default": "5 5",
-          "pattern": "^\\d+(\\.\\d+)?([\\s,]+\\d+(\\.\\d+)?)*$",
+          "pattern": "^\\d+(?:\\.\\d+)?(?:(?:[ \\t\\n\\r\\f]*,[ \\t\\n\\r\\f]*|[ \\t\\n\\r\\f]+)\\d+(?:\\.\\d+)?)*$",
           "markdownDescription": "SVG dash pattern for edge types whose `dashed` is true (see `#tecture.graph.edgeTypes#`). A type's `dashed` decides *whether*; this decides *how*.",
           "scope": "window"
         },
@@ -211,16 +211,16 @@
           "type": "number",
           "default": 13,
           "minimum": 8,
-          "maximum": 32,
-          "markdownDescription": "Node label font size (px).",
+          "maximum": 18,
+          "markdownDescription": "Node label font size (px). Capped at 18 so labels fit the space the automatic layout reserves for each node.",
           "scope": "window"
         },
         "tecture.graph.node.technologyFontSize": {
           "type": "number",
           "default": 9,
           "minimum": 6,
-          "maximum": 24,
-          "markdownDescription": "Node technology tag font size (px).",
+          "maximum": 14,
+          "markdownDescription": "Node technology tag font size (px). Capped at 14 so tags fit the space the automatic layout reserves for each node.",
           "scope": "window"
         },
         "tecture.graph.node.borderRadius": {
@@ -240,7 +240,7 @@
         "tecture.graph.node.showCornerMarks": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Show blueprint corner marks on nodes.",
+          "markdownDescription": "Show blueprint corner marks on nodes. They are hidden on rounded nodes (`#tecture.graph.node.borderRadius#` above 0), where they would stick out past the corners.",
           "scope": "window"
         },
         "tecture.graph.container.backgroundOpacity": {
@@ -281,7 +281,7 @@
         "tecture.graph.canvas.backgroundColor": {
           "type": "string",
           "format": "color",
-          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
           "maxLength": 64,
           "default": "#141414",
@@ -311,7 +311,7 @@
         "tecture.graph.canvas.gridColor": {
           "type": "string",
           "format": "color",
-          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
           "maxLength": 64,
           "default": "rgba(34, 78, 130, 0.12)",
@@ -327,7 +327,7 @@
         "tecture.graph.minimap.nodeColor": {
           "type": "string",
           "format": "color",
-          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
           "maxLength": 64,
           "default": "#22d3ee",
@@ -337,7 +337,7 @@
         "tecture.graph.minimap.maskColor": {
           "type": "string",
           "format": "color",
-          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
           "maxLength": 64,
           "default": "rgba(10, 15, 26, 0.7)",
@@ -369,28 +369,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -403,28 +403,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -437,28 +437,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -471,28 +471,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -505,28 +505,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -539,28 +539,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -573,28 +573,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -607,28 +607,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -641,28 +641,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -675,28 +675,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -709,28 +709,28 @@
                 "bg": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "border": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
                 "text": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 }
@@ -752,7 +752,7 @@
                 "color": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
@@ -771,7 +771,7 @@
                 "color": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
@@ -790,7 +790,7 @@
                 "color": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
@@ -809,7 +809,7 @@
                 "color": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
@@ -828,7 +828,7 @@
                 "color": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
@@ -847,7 +847,7 @@
                 "color": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },
@@ -866,7 +866,7 @@
                 "color": {
                   "type": "string",
                   "format": "color",
-                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([ \\t\\n\\r\\f\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
                   "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
                   "maxLength": 64
                 },

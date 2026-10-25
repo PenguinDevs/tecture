@@ -88,7 +88,7 @@ export interface GraphAppearance {
     borderColor: string | null;
     /** Wrap long labels onto multiple lines instead of one long line. */
     wrap: boolean;
-    /** Max characters per line when `wrap` is on (CSS `ch` units; breaks at word boundaries). */
+    /** Max Latin characters per line when `wrap` is on (CSS `ch` units, so CJK/emoji fit about half); breaks at word boundaries. */
     wrapAt: number;
   };
   edge: {
@@ -203,16 +203,19 @@ export const DEFAULT_APPEARANCE: GraphAppearance = {
 // Colours: hex, rgb()/rgba() and hsl()/hsla() in the legacy comma or modern
 // space syntax, or a CSS colour name. Strict on purpose: a value the browser
 // would drop must fall back to the default instead of blanking the element.
+// Inner whitespace is CSS whitespace only: JS `\s` also matches NBSP and other
+// Unicode spaces, which CSS rejects. (Leading/trailing ones are trimmed.)
+const WS = String.raw`[ \t\n\r\f]`;
 const NUM = String.raw`[+-]?(?:\d*\.)?\d+`;
 const PCT = `${NUM}%`;
 const HUE = `${NUM}(?:deg|grad|rad|turn)?`;
 const ALPHA = `${NUM}%?`;
 const fn = (name: string, args: string) =>
-  String.raw`${name}a?\(\s*${args}\s*\)`;
+  String.raw`${name}a?\(${WS}*${args}${WS}*\)`;
 const legacy = (a: string, b: string, c: string) =>
-  String.raw`${a}\s*,\s*${b}\s*,\s*${c}(?:\s*,\s*${ALPHA})?`;
+  `${a}${WS}*,${WS}*${b}${WS}*,${WS}*${c}(?:${WS}*,${WS}*${ALPHA})?`;
 const modern = (a: string, b: string, c: string) =>
-  String.raw`${a}\s+${b}\s+${c}(?:\s*/\s*${ALPHA})?`;
+  `${a}${WS}+${b}${WS}+${c}(?:${WS}*/${WS}*${ALPHA})?`;
 const COLOR_SYNTAX_RE = new RegExp(
   `^(?:#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})|${[
     fn("rgb", legacy(NUM, NUM, NUM)),
@@ -255,12 +258,22 @@ const NAMED_COLORS = new Set(
 
 /**
  * JSON-schema `pattern` for the VS Code colour settings: a compact shape check
- * (schemas have no `i` flag) that flags typos in the Settings UI. It never
- * rejects a value `isCssColor` accepts; `isCssColor` remains the authority.
+ * (schemas have no `i` flag) that flags bad shapes in the Settings UI, such as
+ * a wrong hex length, `var()` or `oklch()`. Misspelt names and malformed
+ * `rgb()`/`hsl()` arguments pass it and only `isCssColor` rejects them. It
+ * never rejects a value `isCssColor` accepts.
  */
-export const CSS_COLOR_PATTERN = String.raw`^\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\([\s\d.,%/+a-zA-Z-]*\)|[a-zA-Z]{3,24})\s*$`;
+export const CSS_COLOR_PATTERN = String.raw`^\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\([ \t\n\r\f\d.,%/+a-zA-Z-]*\)|[a-zA-Z]{3,24})\s*$`;
 
-const DASH_RE = /^\d+(?:\.\d+)?(?:[\s,]+\d+(?:\.\d+)?)*$/;
+// Dash lengths separated by one comma (optionally padded) or by whitespace.
+const DASH_RE = new RegExp(
+  String.raw`^\d+(?:\.\d+)?(?:(?:${WS}*,${WS}*|${WS}+)\d+(?:\.\d+)?)*$`,
+);
+
+/** Exported as the schema `pattern` of `tecture.graph.edge.dashPattern`. */
+export const DASH_PATTERN = DASH_RE.source;
+
+const ASCII_WORD_RE = /^[a-z]+$/i;
 
 /** Hex, rgb()/rgba(), hsl()/hsla() or a CSS colour name, up to 64 characters. */
 export function isCssColor(v: unknown): v is string {
@@ -268,7 +281,8 @@ export function isCssColor(v: unknown): v is string {
   const s = v.trim();
   return (
     s.length <= 64 &&
-    (COLOR_SYNTAX_RE.test(s) || NAMED_COLORS.has(s.toLowerCase()))
+    (COLOR_SYNTAX_RE.test(s) ||
+      (ASCII_WORD_RE.test(s) && NAMED_COLORS.has(s.toLowerCase())))
   );
 }
 
@@ -346,8 +360,8 @@ const SPEC = {
   node: {
     // The automatic layout reserves 220px per leaf; wider nodes would overlap.
     minWidth: range(60, 220),
-    labelFontSize: range(8, 32),
-    technologyFontSize: range(6, 24),
+    labelFontSize: range(8, 18),
+    technologyFontSize: range(6, 14),
     borderRadius: range(0, 32),
     showIcons: bool,
     showCornerMarks: bool,

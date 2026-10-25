@@ -10,9 +10,11 @@ All notable changes to the Tecture VS Code extension are documented here.
   labels (colour, opacity, font, padding, border, and wrapping, on by default
   at 18 characters via `edgeLabel.wrap` / `edgeLabel.wrapAt`), edges, nodes,
   containers, canvas grid, minimap, controls, legend, and per-type node and
-  edge colours. Changes apply live. Invalid values fall back per key; colours
-  accept hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name, and the
-  Settings UI flags malformed ones.
+  edge colours. Changes apply live. Invalid values fall back to the default
+  per key. Colours accept hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS
+  colour name; the Settings UI flags the wrong shape (bad hex length,
+  `var()`, `oklch()`), but a misspelt name or malformed `rgb()` arguments
+  silently fall back.
 
 ### Changed
 

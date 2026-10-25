@@ -135,6 +135,11 @@ const BAD_VALUES = [
   "fuschia",
   "none",
   "inherit",
+  // Non-CSS whitespace inside the function (NBSP, ideographic space) and a
+  // name spelt with the Kelvin sign, which lower-cases to ASCII "k".
+  "rgb(\u00a01,2,3)",
+  "rgb(1\u30002\u30003)",
+  "\u212Ahaki",
 ];
 
 describe("isCssColor", () => {
@@ -152,6 +157,17 @@ describe("CSS_COLOR_PATTERN", () => {
   );
   it.each(BAD_SHAPES)("flags %s in the settings", (c) =>
     expect(pattern.test(c)).toBe(false),
+  );
+});
+
+describe("edge.dashPattern", () => {
+  const dash = (v: string) => mergeAppearance({ edge: { dashPattern: v } }).edge.dashPattern;
+  it.each(["5 5", "4,2", "4, 2", "4 ,2 1", "1.5\t3"])("keeps %s", (v) =>
+    expect(dash(v)).toBe(v),
+  );
+  // Chromium drops these, which would draw dashed edges solid.
+  it.each(["5,,5", "5 , , 5", "5\u00a05", ",5", "5,", "a b"])("rejects %s", (v) =>
+    expect(dash(v)).toBe(DEFAULT_APPEARANCE.edge.dashPattern),
   );
 });
 
