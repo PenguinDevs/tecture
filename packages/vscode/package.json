@@ -126,10 +126,10 @@
           "scope": "window"
         },
         "tecture.graph.edgeLabel.borderColor": {
-          "type": {
-            "0": "string",
-            "1": "null"
-          },
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "color",
           "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
           "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
@@ -185,26 +185,26 @@
         },
         "tecture.graph.edge.animation": {
           "type": "string",
-          "enum": {
-            "0": "auto",
-            "1": "always",
-            "2": "never"
-          },
+          "enum": [
+            "auto",
+            "always",
+            "never"
+          ],
           "default": "auto",
           "markdownDescription": "Edge flow animation. `auto` uses each edge type's `animated` flag; `always`/`never` override every type.",
-          "enumDescriptions": {
-            "0": "Per edge type",
-            "1": "Animate all edges",
-            "2": "Animate no edges"
-          },
+          "enumDescriptions": [
+            "Per edge type",
+            "Animate all edges",
+            "Animate no edges"
+          ],
           "scope": "window"
         },
         "tecture.graph.node.minWidth": {
           "type": "number",
           "default": 160,
           "minimum": 60,
-          "maximum": 600,
-          "markdownDescription": "Minimum node width (px).",
+          "maximum": 220,
+          "markdownDescription": "Minimum node width (px). Capped at 220, the width the automatic layout reserves for each node.",
           "scope": "window"
         },
         "tecture.graph.node.labelFontSize": {
@@ -261,11 +261,11 @@
         },
         "tecture.graph.container.borderStyle": {
           "type": "string",
-          "enum": {
-            "0": "dashed",
-            "1": "solid",
-            "2": "dotted"
-          },
+          "enum": [
+            "dashed",
+            "solid",
+            "dotted"
+          ],
           "default": "dashed",
           "markdownDescription": "Container border style.",
           "scope": "window"
@@ -290,12 +290,12 @@
         },
         "tecture.graph.canvas.grid": {
           "type": "string",
-          "enum": {
-            "0": "lines",
-            "1": "dots",
-            "2": "cross",
-            "3": "none"
-          },
+          "enum": [
+            "lines",
+            "dots",
+            "cross",
+            "none"
+          ],
           "default": "lines",
           "markdownDescription": "Canvas grid pattern.",
           "scope": "window"

@@ -344,7 +344,8 @@ const SPEC = {
     animation: oneOf(EdgeAnimationMode),
   },
   node: {
-    minWidth: range(60, 600),
+    // The automatic layout reserves 220px per leaf; wider nodes would overlap.
+    minWidth: range(60, 220),
     labelFontSize: range(8, 32),
     technologyFontSize: range(6, 24),
     borderRadius: range(0, 32),
