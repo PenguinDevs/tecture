@@ -2,9 +2,14 @@ import {
   EdgeLabelRenderer,
   getSmoothStepPath,
   useInternalNode,
+  type Edge,
   type EdgeProps,
 } from "@xyflow/react";
 import { getEdgeParams } from "./utils";
+import { laneOffset, lanePath, laneSpread } from "./lanePath";
+import type { ArchEdgeData } from "../transform";
+
+const CORNER_RADIUS = 8;
 
 export function FloatingEdge({
   id,
@@ -18,7 +23,8 @@ export function FloatingEdge({
   labelBgPadding,
   labelBgBorderRadius,
   animated,
-}: EdgeProps) {
+  data,
+}: EdgeProps<Edge<ArchEdgeData>>) {
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
@@ -28,16 +34,30 @@ export function FloatingEdge({
     sourceNode,
     targetNode,
   );
+  const parallelIndex = data?.parallelIndex ?? 0;
+  const parallelCount = data?.parallelCount ?? 1;
 
-  const [edgePath, labelX, labelY] = getSmoothStepPath({
-    sourceX: sx,
-    sourceY: sy,
-    sourcePosition: sourcePos,
-    targetPosition: targetPos,
-    targetX: tx,
-    targetY: ty,
-    borderRadius: 8,
-  });
+  // Edges sharing a node pair each take their own lane beside one centre
+  // line. A self-loop has both ends on one side and keeps the plain route.
+  const [edgePath, labelX, labelY] =
+    parallelCount > 1 && sourcePos !== targetPos
+      ? lanePath(
+          { x: sx, y: sy },
+          { x: tx, y: ty },
+          sourcePos,
+          laneOffset(parallelIndex, parallelCount, source > target),
+          laneSpread(parallelCount),
+          CORNER_RADIUS,
+        )
+      : getSmoothStepPath({
+          sourceX: sx,
+          sourceY: sy,
+          sourcePosition: sourcePos,
+          targetPosition: targetPos,
+          targetX: tx,
+          targetY: ty,
+          borderRadius: CORNER_RADIUS,
+        });
 
   return (
     <>
