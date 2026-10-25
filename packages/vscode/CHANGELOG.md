@@ -6,7 +6,7 @@ All notable changes to the Tecture VS Code extension are documented here.
 
 ### Added
 
-- **Graph appearance settings.** 39 `tecture.graph.*` settings cover edge
+- **Graph appearance settings.** 38 `tecture.graph.*` settings cover edge
   labels (colour, opacity, font, padding, border, and wrapping, on by default
   at 18 characters via `edgeLabel.wrap` / `edgeLabel.wrapAt`), edges, nodes,
   containers, canvas grid, minimap, controls, legend, and per-type node and
