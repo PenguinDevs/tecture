@@ -14,6 +14,10 @@ export interface ArchNodeData extends Record<string, unknown> {
 /** Edge styling is resolved at render time (FloatingEdge) from the appearance context. */
 export interface ArchEdgeData extends Record<string, unknown> {
   edgeType?: string;
+  /** Position of this edge among all edges joining the same two nodes (either direction). */
+  parallelIndex: number;
+  /** Number of edges joining the same two nodes (either direction). */
+  parallelCount: number;
 }
 
 export function diagramToFlow(diagram: ApiDiagram): {
@@ -27,12 +31,29 @@ export function diagramToFlow(diagram: ApiDiagram): {
       childCounts.set(n.parentId, (childCounts.get(n.parentId) ?? 0) + 1);
     }
   }
+  const edges = diagram.edges.filter(
+    (e) => nodeIds.has(e.source) && nodeIds.has(e.target),
+  );
+  const groups = new Map<string, number>();
+  const slots = edges.map((e) => {
+    const key = pairKey(e);
+    const index = groups.get(key) ?? 0;
+    groups.set(key, index + 1);
+    return { e, key, index };
+  });
   return {
     nodes: diagram.nodes.map((n) => toFlowNode(n, childCounts.has(n.id))),
-    edges: diagram.edges
-      .filter((e) => nodeIds.has(e.source) && nodeIds.has(e.target))
-      .map(toFlowEdge),
+    edges: slots.map(({ e, key, index }) =>
+      toFlowEdge(e, index, groups.get(key) ?? 1),
+    ),
   };
+}
+
+/** Order-independent key so A→B and B→A share a group. */
+function pairKey(e: ArchitectureEdge): string {
+  return e.source < e.target
+    ? `${e.source}\u0000${e.target}`
+    : `${e.target}\u0000${e.source}`;
 }
 
 function toFlowNode(n: ArchitectureNode, hasChildren: boolean): Node<ArchNodeData> {
@@ -59,13 +80,17 @@ function toFlowNode(n: ArchitectureNode, hasChildren: boolean): Node<ArchNodeDat
   return node;
 }
 
-function toFlowEdge(e: ArchitectureEdge): Edge<ArchEdgeData> {
+function toFlowEdge(
+  e: ArchitectureEdge,
+  parallelIndex: number,
+  parallelCount: number,
+): Edge<ArchEdgeData> {
   return {
     id: e.id,
     source: e.source,
     target: e.target,
     type: "floating",
     label: e.label,
-    data: { edgeType: e.meta?.type },
+    data: { edgeType: e.meta?.type, parallelIndex, parallelCount },
   };
 }
