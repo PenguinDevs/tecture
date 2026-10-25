@@ -11,6 +11,7 @@ import { laneOffset, lanePath, laneSpread } from "./lanePath";
 import {
   candidateFractions,
   candidatesAt,
+  directionGlyph,
   LabelSide,
   useLabelLayoutStore,
   useLabelPlacement,
@@ -145,7 +146,13 @@ export function FloatingEdge({
 
   if (!params) return null;
 
-  const spot = placement ?? { x: labelX, y: labelY };
+  const spot = placement ?? {
+    x: labelX,
+    y: labelY,
+    angle: candidates[0]?.angle ?? 0,
+  };
+  // Edges sharing a node pair say which way they point.
+  const glyph = parallelCount > 1 ? directionGlyph(spot.angle) : null;
 
   return (
     <>
@@ -175,7 +182,14 @@ export function FloatingEdge({
                 : {}),
             }}
           >
-            <span style={labelStyle as React.CSSProperties}>{label}</span>
+            <span style={labelStyle as React.CSSProperties}>
+              {glyph && (
+                <span aria-hidden style={{ color: style?.stroke, marginRight: "0.5ch" }}>
+                  {glyph}
+                </span>
+              )}
+              {label}
+            </span>
           </div>
         </EdgeLabelRenderer>
       )}
