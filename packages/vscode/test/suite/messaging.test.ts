@@ -5,6 +5,7 @@ import {
   appearanceBootScript,
   readAppearanceOverrides,
 } from "../../src/appearance";
+import { injectIntoHead } from "../../src/panel";
 import {
   VscodeFsArchitectureDataSource,
   VscodeFsLayoutStore,
@@ -238,5 +239,16 @@ suite("appearance settings", () => {
     });
     assert.strictEqual(html.match(/<\/script>/g)?.length, 1);
     assert.ok(html.startsWith('<script nonce="n0nce">'));
+  });
+
+  test("$ replacement patterns in a setting value leave the page intact", () => {
+    const overrides = { canvas: { backgroundColor: "$' $` $& $$" } };
+    const page = injectIntoHead(
+      '<!doctype html><html><head>\n<title>t</title></head><body><div id="root"></div></body></html>',
+      appearanceBootScript("n0nce", overrides),
+    );
+    assert.strictEqual(page.match(/id="root"/g)?.length, 1);
+    const json = /window\.__TECTURE_APPEARANCE__=(.*);<\/script>/.exec(page)?.[1];
+    assert.deepStrictEqual(JSON.parse(json ?? "null"), overrides);
   });
 });

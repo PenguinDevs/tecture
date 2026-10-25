@@ -161,13 +161,22 @@ export class TecturePanel {
     html = html.replace(/<script\b/g, `<script nonce="${nonce}"`);
 
     // Inject CSP meta + initial appearance into <head>, ahead of the bundle.
-    html = html.replace(
-      /<head>/,
-      `<head>\n    <meta http-equiv="Content-Security-Policy" content="${csp}">\n    ${appearanceBootScript(nonce, readAppearanceOverrides())}`,
+    html = injectIntoHead(
+      html,
+      `<meta http-equiv="Content-Security-Policy" content="${csp}">\n    ${appearanceBootScript(nonce, readAppearanceOverrides())}`,
     );
 
     return html;
   }
+}
+
+/**
+ * Insert `markup` right after `<head>`. Uses a replacer function, not a string:
+ * `markup` carries raw setting values, and `$'`, `` $` `` or `$&` in a
+ * replacement string would splice parts of the page into the boot script.
+ */
+export function injectIntoHead(html: string, markup: string): string {
+  return html.replace(/<head>/, () => `<head>\n    ${markup}`);
 }
 
 function isRequest(value: unknown): value is TectureRequest {
