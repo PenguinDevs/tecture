@@ -1,5 +1,16 @@
 # @tecture/web
 
+## Unreleased
+
+- Edge labels now avoid overlapping each other, nodes and container headers
+  wherever their edge has a clear spot: each canvas places its labels together,
+  sliding a label along its edge until it finds room. Edges that join the same
+  two nodes, such as a request one way and a response the other, run on
+  separate parallel lines that never cross. Each label of such a pair sits
+  beside its own line and starts with an arrow (→ ← ↑ ↓) showing which way that
+  edge points; with three or more edges, the inner lines' labels sit on their
+  line.
+
 ## 0.2.0
 
 - Added drift surfacing. When the host provides a drift report (from the
