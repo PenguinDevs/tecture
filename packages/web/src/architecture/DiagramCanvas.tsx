@@ -22,7 +22,11 @@ import { ArchitectureNode } from "./ArchitectureNode";
 import { Legend } from "./Legend";
 import { LayoutPersistenceContext } from "./LayoutPersistenceContext";
 import { FloatingEdge } from "./edges/FloatingEdge";
-import { LabelLayoutContext, LabelLayoutStore } from "./edges/labelLayout";
+import {
+  LabelLayoutContext,
+  LabelLayoutStore,
+  LabelObstacleSync,
+} from "./edges/labelLayout";
 import { diagramToFlow, type ArchNodeData } from "./transform";
 import { layoutDiagram } from "./layout";
 import {
@@ -203,6 +207,7 @@ function DiagramCanvasInner({ diagramId, onSelectNode, onDrillIn }: Props) {
           size={1}
           color="rgba(34, 78, 130, 0.12)"
         />
+        <LabelObstacleSync store={labelLayout} />
         <Controls showInteractive={false} position="bottom-right" />
         {diagram && <Legend diagram={diagram} />}
         <MiniMap
