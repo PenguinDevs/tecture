@@ -72,7 +72,7 @@ Every visual knob lives under `tecture.graph.*` in your settings (UI or `setting
 }
 ```
 
-Groups: `edgeLabel` (visibility, colours, opacity, font, padding, radius, border, wrapping), `edge` (width, dash, arrow size, corner radius, animation), `node` (min width, font sizes, radius, icons, corner marks), `container` (fill/header opacity, border), `canvas` (background, grid style/gap/colour), `minimap`, `controls`, `legend`, and per-type `nodeTypes` / `edgeTypes` colour overrides. Colours accept any CSS colour.
+Groups: `edgeLabel` (visibility, colours, opacity, font, padding, radius, border, wrapping), `edge` (width, dash, arrow size, corner radius, animation), `node` (min width, font sizes, radius, icons, corner marks), `container` (fill/header opacity, border), `canvas` (background, grid style/gap/colour), `minimap`, `controls`, `legend`, and per-type `nodeTypes` / `edgeTypes` colour overrides. Colours accept hex (`#rgb`, `#rrggbb`, `#rrggbbaa`), `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name such as `teal`; other syntaxes such as `var(--…)` or `oklch()` fall back to the default.
 
 ## Requirements
 

@@ -60,8 +60,11 @@
         "tecture.graph.edgeLabel.backgroundColor": {
           "type": "string",
           "format": "color",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+          "maxLength": 64,
           "default": "#0a0f1a",
-          "markdownDescription": "Edge label box fill. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "markdownDescription": "Edge label box fill. Hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name.",
           "scope": "window"
         },
         "tecture.graph.edgeLabel.backgroundOpacity": {
@@ -75,8 +78,11 @@
         "tecture.graph.edgeLabel.textColor": {
           "type": "string",
           "format": "color",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+          "maxLength": 64,
           "default": "#e2e8f0",
-          "markdownDescription": "Edge label text colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "markdownDescription": "Edge label text colour. Hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name.",
           "scope": "window"
         },
         "tecture.graph.edgeLabel.fontSize": {
@@ -120,11 +126,14 @@
           "scope": "window"
         },
         "tecture.graph.edgeLabel.borderColor": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": {
+            "0": "string",
+            "1": "null"
+          },
           "format": "color",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+          "maxLength": 64,
           "default": null,
           "markdownDescription": "Edge label outline colour; `null` for no outline.",
           "scope": "window"
@@ -176,18 +185,18 @@
         },
         "tecture.graph.edge.animation": {
           "type": "string",
-          "enum": [
-            "auto",
-            "always",
-            "never"
-          ],
+          "enum": {
+            "0": "auto",
+            "1": "always",
+            "2": "never"
+          },
           "default": "auto",
           "markdownDescription": "Edge flow animation. `auto` uses each edge type's `animated` flag; `always`/`never` override every type.",
-          "enumDescriptions": [
-            "Per edge type",
-            "Animate all edges",
-            "Animate no edges"
-          ],
+          "enumDescriptions": {
+            "0": "Per edge type",
+            "1": "Animate all edges",
+            "2": "Animate no edges"
+          },
           "scope": "window"
         },
         "tecture.graph.node.minWidth": {
@@ -252,11 +261,11 @@
         },
         "tecture.graph.container.borderStyle": {
           "type": "string",
-          "enum": [
-            "dashed",
-            "solid",
-            "dotted"
-          ],
+          "enum": {
+            "0": "dashed",
+            "1": "solid",
+            "2": "dotted"
+          },
           "default": "dashed",
           "markdownDescription": "Container border style.",
           "scope": "window"
@@ -272,18 +281,21 @@
         "tecture.graph.canvas.backgroundColor": {
           "type": "string",
           "format": "color",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+          "maxLength": 64,
           "default": "#141414",
-          "markdownDescription": "Canvas background colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "markdownDescription": "Canvas background colour. Hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name.",
           "scope": "window"
         },
         "tecture.graph.canvas.grid": {
           "type": "string",
-          "enum": [
-            "lines",
-            "dots",
-            "cross",
-            "none"
-          ],
+          "enum": {
+            "0": "lines",
+            "1": "dots",
+            "2": "cross",
+            "3": "none"
+          },
           "default": "lines",
           "markdownDescription": "Canvas grid pattern.",
           "scope": "window"
@@ -299,8 +311,11 @@
         "tecture.graph.canvas.gridColor": {
           "type": "string",
           "format": "color",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+          "maxLength": 64,
           "default": "rgba(34, 78, 130, 0.12)",
-          "markdownDescription": "Canvas grid colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "markdownDescription": "Canvas grid colour. Hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name.",
           "scope": "window"
         },
         "tecture.graph.minimap.visible": {
@@ -312,15 +327,21 @@
         "tecture.graph.minimap.nodeColor": {
           "type": "string",
           "format": "color",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+          "maxLength": 64,
           "default": "#22d3ee",
-          "markdownDescription": "Minimap node colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "markdownDescription": "Minimap node colour. Hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name.",
           "scope": "window"
         },
         "tecture.graph.minimap.maskColor": {
           "type": "string",
           "format": "color",
+          "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+          "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+          "maxLength": 64,
           "default": "rgba(10, 15, 26, 0.7)",
-          "markdownDescription": "Minimap viewport mask colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
+          "markdownDescription": "Minimap viewport mask colour. Hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a CSS colour name.",
           "scope": "window"
         },
         "tecture.graph.controls.visible": {
@@ -347,19 +368,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -369,19 +402,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -391,19 +436,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -413,19 +470,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -435,19 +504,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -457,19 +538,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -479,19 +572,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -501,19 +606,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -523,19 +640,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -545,19 +674,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             },
@@ -567,19 +708,31 @@
               "properties": {
                 "bg": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "border": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "accent": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "text": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 }
               }
             }
@@ -598,7 +751,10 @@
               "properties": {
                 "color": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "dashed": {
                   "type": "boolean"
@@ -614,7 +770,10 @@
               "properties": {
                 "color": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "dashed": {
                   "type": "boolean"
@@ -630,7 +789,10 @@
               "properties": {
                 "color": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "dashed": {
                   "type": "boolean"
@@ -646,7 +808,10 @@
               "properties": {
                 "color": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "dashed": {
                   "type": "boolean"
@@ -662,7 +827,10 @@
               "properties": {
                 "color": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "dashed": {
                   "type": "boolean"
@@ -678,7 +846,10 @@
               "properties": {
                 "color": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "dashed": {
                   "type": "boolean"
@@ -694,7 +865,10 @@
               "properties": {
                 "color": {
                   "type": "string",
-                  "format": "color"
+                  "format": "color",
+                  "pattern": "^\\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\\([\\s\\d.,%/+a-zA-Z-]*\\)|[a-zA-Z]{3,24})\\s*$",
+                  "patternErrorMessage": "Use hex (#rgb, #rrggbb, #rrggbbaa), rgb()/rgba(), hsl()/hsla() or a CSS colour name.",
+                  "maxLength": 64
                 },
                 "dashed": {
                   "type": "boolean"

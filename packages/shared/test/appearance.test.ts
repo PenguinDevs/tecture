@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  CSS_COLOR_PATTERN,
   DEFAULT_APPEARANCE,
   EdgeAnimationMode,
   isCssColor,
   isEdgeAnimated,
+  isRecord,
   mergeAppearance,
+  type GraphAppearance,
 } from "../src/index";
 
 describe("mergeAppearance", () => {
@@ -72,16 +75,83 @@ describe("mergeAppearance", () => {
       expect(mergeAppearance({ edgeLabel: { wrapAt } }).edgeLabel.wrapAt).toBe(18);
     }
   });
+
+  it("accepts every built-in default as an override", () => {
+    // A base that differs at every leaf: a default some validator rejects
+    // would keep the base value and break the equality.
+    const differ = (v: unknown): unknown =>
+      typeof v === "boolean"
+        ? !v
+        : typeof v === "number"
+          ? v + 0.5
+          : isRecord(v)
+            ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, differ(x)]))
+            : "\u0000";
+    const base = differ(DEFAULT_APPEARANCE) as GraphAppearance;
+    expect(mergeAppearance(DEFAULT_APPEARANCE, base)).toEqual(DEFAULT_APPEARANCE);
+  });
 });
 
+// Checked against Chromium's CSS.supports("color", …): every accepted value
+// parses; the rejects are invalid CSS, or valid CSS deliberately unsupported
+// (var(), CSS-wide keywords, newer colour functions).
+const VALID_COLORS = [
+  "#abc",
+  "#ABCD",
+  "#aabbcc80",
+  "rgb(1, 2, 3)",
+  "rgba(1,2,3,.5)",
+  "RGB(10%, 20%, 30%)",
+  "rgb(255 0 0 / 50%)",
+  "hsl(-120, 50%, 50%)",
+  "hsla(200deg 50% 50% / 0.5)",
+  "hsl(.5turn 10% 10%)",
+  "teal",
+  "RebeccaPurple",
+  "transparent",
+  "currentColor",
+];
+// Invalid in both layers: the settings pattern flags these too.
+const BAD_SHAPES = [
+  "",
+  "#ab",
+  "#12345",
+  "#ggg",
+  "red;",
+  "url(x)",
+  "expression(alert(1))",
+  "var(--x)",
+  "oklch(70% 0.1 200)",
+];
+// Colour-shaped but invalid: only the validator catches these.
+const BAD_VALUES = [
+  "rgb()",
+  "rgba(1)",
+  "rgb(1., 2, 3)",
+  "rgb(1, 2, 3,)",
+  "rgb(255 0 0 0.5)",
+  "rgb(255, 50%, 0)",
+  "hsl(200, 50, 50)",
+  "fuschia",
+  "none",
+  "inherit",
+];
+
 describe("isCssColor", () => {
-  it.each(["#abc", "#aabbcc", "#aabbcc80", "rgb(1, 2, 3)", "hsla(200 50% 50% / 0.5)", "teal"])(
-    "accepts %s",
-    (c) => expect(isCssColor(c)).toBe(true),
+  it.each(VALID_COLORS)("accepts %s", (c) => expect(isCssColor(c)).toBe(true));
+  it.each([...BAD_SHAPES, ...BAD_VALUES])("rejects %s", (c) =>
+    expect(isCssColor(c)).toBe(false),
   );
-  it.each(["", "#ab", "url(x)", "red;", "var(--x)", "expression(alert(1))"])(
-    "rejects %s",
-    (c) => expect(isCssColor(c)).toBe(false),
+});
+
+describe("CSS_COLOR_PATTERN", () => {
+  // VS Code compiles settings `pattern`s with the `u` flag.
+  const pattern = new RegExp(CSS_COLOR_PATTERN, "u");
+  it.each(VALID_COLORS)("never flags valid %s in the settings", (c) =>
+    expect(pattern.test(c)).toBe(true),
+  );
+  it.each(BAD_SHAPES)("flags %s in the settings", (c) =>
+    expect(pattern.test(c)).toBe(false),
   );
 });
 

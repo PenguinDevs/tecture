@@ -200,19 +200,75 @@ export const DEFAULT_APPEARANCE: GraphAppearance = {
 
 // ─── Validation ───
 
-const HEX_COLOR_RE = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
-const FUNC_COLOR_RE = /^(?:rgba?|hsla?)\(\s*[0-9.,%\s/+-]*(?:deg)?[0-9.,%\s/+-]*\)$/i;
-const NAMED_COLOR_RE = /^[a-z]{3,24}$/i;
+// Colours: hex, rgb()/rgba() and hsl()/hsla() in the legacy comma or modern
+// space syntax, or a CSS colour name. Strict on purpose: a value the browser
+// would drop must fall back to the default instead of blanking the element.
+const NUM = String.raw`[+-]?(?:\d*\.)?\d+`;
+const PCT = `${NUM}%`;
+const HUE = `${NUM}(?:deg|grad|rad|turn)?`;
+const ALPHA = `${NUM}%?`;
+const fn = (name: string, args: string) =>
+  String.raw`${name}a?\(\s*${args}\s*\)`;
+const legacy = (a: string, b: string, c: string) =>
+  String.raw`${a}\s*,\s*${b}\s*,\s*${c}(?:\s*,\s*${ALPHA})?`;
+const modern = (a: string, b: string, c: string) =>
+  String.raw`${a}\s+${b}\s+${c}(?:\s*/\s*${ALPHA})?`;
+const COLOR_SYNTAX_RE = new RegExp(
+  `^(?:#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})|${[
+    fn("rgb", legacy(NUM, NUM, NUM)),
+    fn("rgb", legacy(PCT, PCT, PCT)),
+    fn("rgb", modern(NUM, NUM, NUM)),
+    fn("rgb", modern(PCT, PCT, PCT)),
+    fn("hsl", legacy(HUE, PCT, PCT)),
+    fn("hsl", modern(HUE, PCT, PCT)),
+  ].join("|")})$`,
+  "i",
+);
+
+// CSS named colours, plus `transparent` and `currentcolor`.
+const NAMED_COLORS = new Set(
+  (
+    "aliceblue antiquewhite aqua aquamarine azure beige bisque black " +
+    "blanchedalmond blue blueviolet brown burlywood cadetblue chartreuse " +
+    "chocolate coral cornflowerblue cornsilk crimson cyan darkblue darkcyan " +
+    "darkgoldenrod darkgray darkgreen darkgrey darkkhaki darkmagenta " +
+    "darkolivegreen darkorange darkorchid darkred darksalmon darkseagreen " +
+    "darkslateblue darkslategray darkslategrey darkturquoise darkviolet " +
+    "deeppink deepskyblue dimgray dimgrey dodgerblue firebrick floralwhite " +
+    "forestgreen fuchsia gainsboro ghostwhite gold goldenrod gray green " +
+    "greenyellow grey honeydew hotpink indianred indigo ivory khaki lavender " +
+    "lavenderblush lawngreen lemonchiffon lightblue lightcoral lightcyan " +
+    "lightgoldenrodyellow lightgray lightgreen lightgrey lightpink " +
+    "lightsalmon lightseagreen lightskyblue lightslategray lightslategrey " +
+    "lightsteelblue lightyellow lime limegreen linen magenta maroon " +
+    "mediumaquamarine mediumblue mediumorchid mediumpurple mediumseagreen " +
+    "mediumslateblue mediumspringgreen mediumturquoise mediumvioletred " +
+    "midnightblue mintcream mistyrose moccasin navajowhite navy oldlace olive " +
+    "olivedrab orange orangered orchid palegoldenrod palegreen paleturquoise " +
+    "palevioletred papayawhip peachpuff peru pink plum powderblue purple " +
+    "rebeccapurple red rosybrown royalblue saddlebrown salmon sandybrown " +
+    "seagreen seashell sienna silver skyblue slateblue slategray slategrey " +
+    "snow springgreen steelblue tan teal thistle tomato turquoise violet " +
+    "wheat white whitesmoke yellow yellowgreen transparent currentcolor"
+  ).split(" "),
+);
+
+/**
+ * JSON-schema `pattern` for the VS Code colour settings: a compact shape check
+ * (schemas have no `i` flag) that flags typos in the Settings UI. It never
+ * rejects a value `isCssColor` accepts; `isCssColor` remains the authority.
+ */
+export const CSS_COLOR_PATTERN = String.raw`^\s*(?:#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|(?:[rR][gG][bB]|[hH][sS][lL])[aA]?\([\s\d.,%/+a-zA-Z-]*\)|[a-zA-Z]{3,24})\s*$`;
+
 const DASH_RE = /^\d+(?:\.\d+)?(?:[\s,]+\d+(?:\.\d+)?)*$/;
 
-/** CSS colour literal: hex, rgb()/rgba()/hsl()/hsla(), or a bare keyword. */
+/** Hex, rgb()/rgba(), hsl()/hsla() or a CSS colour name, up to 64 characters. */
 export function isCssColor(v: unknown): v is string {
   if (typeof v !== "string") return false;
   const s = v.trim();
   return (
-    s.length > 0 &&
     s.length <= 64 &&
-    (HEX_COLOR_RE.test(s) || FUNC_COLOR_RE.test(s) || NAMED_COLOR_RE.test(s))
+    (COLOR_SYNTAX_RE.test(s) || NAMED_COLORS.has(s.toLowerCase()))
   );
 }
 
