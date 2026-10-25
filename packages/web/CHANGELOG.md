@@ -8,6 +8,12 @@
   the built-in look. Pass the output of `mergeAppearance()` to apply untrusted
   overrides safely. Requires the matching `@tecture/shared` release, which adds
   these exports.
+- The onboarding tour now remembers being closed: a reload (a changed
+  `reloadKey`) no longer reopens it, so it shows once per mount instead of on
+  every architecture load. Data sources can implement the new optional
+  `isOnboardingDismissed()` / `dismissOnboarding()` to add a persistent
+  **Don't show again** button (hidden when they're absent), and `App` gains a
+  `showOnboardingKey` prop that reopens the tour whenever it changes.
 
 ## 0.2.0
 

@@ -157,6 +157,8 @@ export type TectureRequest =
   | { id: string; type: "loadNodeDetail"; nodeId: string }
   | { id: string; type: "loadDrift" }
   | { id: string; type: "openFile"; path: string }
+  | { id: string; type: "isOnboardingDismissed" }
+  | { id: string; type: "dismissOnboarding" }
   | {
       id: string;
       type: "saveLayout";
@@ -172,7 +174,9 @@ export type TectureEvent =
   | { type: "refresh" }
   | { type: "selectDiagram"; slug: string }
   // Raw user overrides; the webview validates them with mergeAppearance().
-  | { type: "appearance"; overrides: unknown };
+  | { type: "appearance"; overrides: unknown }
+  // Reopen the onboarding tour, e.g. after the host resets "Don't show again".
+  | { type: "showOnboarding" };
 
 export type TectureNotification =
   | { type: "ready" }

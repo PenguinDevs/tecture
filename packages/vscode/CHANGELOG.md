@@ -15,6 +15,9 @@ All notable changes to the Tecture VS Code extension are documented here.
   colour name; the Settings UI flags the wrong shape (bad hex length,
   `var()`, `oklch()`), but a misspelt name or malformed `rgb()` arguments
   silently fall back.
+- **"Don't show again" for the getting-started tour.** The choice is saved per
+  workspace, so the tour stops opening in that project while still greeting you
+  in new ones. **Tecture: Reset Getting Started Tour** brings it back.
 
 ### Changed
 
@@ -26,6 +29,9 @@ All notable changes to the Tecture VS Code extension are documented here.
 
 - The extension test suite ran 0 tests on Windows (test bundles were emitted
   outside the runner's glob).
+- **The getting-started tour no longer reopens on every architecture change.**
+  Closing it now keeps it closed until the panel is reopened; before, every
+  file-change reload brought it back.
 
 ## [0.0.13] — 2026-07-06
 

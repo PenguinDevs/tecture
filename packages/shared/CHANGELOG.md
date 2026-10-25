@@ -9,6 +9,9 @@
   `NODE_TYPE_KEYS` / `EDGE_TYPE_KEYS`, and the `CSS_COLOR_PATTERN` /
   `DASH_PATTERN` JSON-schema patterns.
 - Added an `appearance` event to the `TectureEvent` webview protocol.
+- Added `isOnboardingDismissed` and `dismissOnboarding` requests and a
+  `showOnboarding` event to the webview protocol, so hosts can persist the
+  viewer's "Don't show again" choice and reopen the tour.
 
 ## 0.2.0
 

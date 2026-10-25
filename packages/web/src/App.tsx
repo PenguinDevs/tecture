@@ -27,6 +27,8 @@ export interface AppProps {
   dataSource: WebDataSource;
   /** Forces the bundle provider to reload when the value changes. */
   reloadKey?: unknown;
+  /** Opens the onboarding tour when the value changes, e.g. from a host command. */
+  showOnboardingKey?: unknown;
   /** Show the floating diagram list overlay. Defaults to true. */
   showDiagramList?: boolean;
   /** Resolved graph appearance (see mergeAppearance). Defaults to the built-in look. */
@@ -36,6 +38,7 @@ export interface AppProps {
 export function App({
   dataSource,
   reloadKey,
+  showOnboardingKey,
   showDiagramList = true,
   appearance = DEFAULT_APPEARANCE,
 }: AppProps) {
@@ -44,7 +47,11 @@ export function App({
   if (route.view === "style-guide") return <StyleGuide />;
   return (
     <AppearanceProvider appearance={appearance}>
-      <ArchitectureBundleProvider dataSource={dataSource} reloadKey={reloadKey}>
+      <ArchitectureBundleProvider
+        dataSource={dataSource}
+        reloadKey={reloadKey}
+        showOnboardingKey={showOnboardingKey}
+      >
         <ArchitectureView
           diagramId={route.diagramId}
           showDiagramList={showDiagramList}
