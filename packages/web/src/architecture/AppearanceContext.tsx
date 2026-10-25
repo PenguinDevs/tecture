@@ -1,13 +1,9 @@
-import { createContext, useContext, useLayoutEffect } from "react";
+import { createContext, useContext } from "react";
 import { DEFAULT_APPEARANCE, type GraphAppearance } from "@tecture/shared";
 
 const AppearanceContext = createContext<GraphAppearance>(DEFAULT_APPEARANCE);
 
-/**
- * Supplies the resolved (already validated) graph appearance and mirrors the
- * canvas background onto `:root` so CSS that reads `--bg-deep` (blueprint grid,
- * splash, page background) follows the setting.
- */
+/** Supplies the resolved (already validated) graph appearance. */
 export function AppearanceProvider({
   appearance,
   children,
@@ -15,10 +11,6 @@ export function AppearanceProvider({
   appearance: GraphAppearance;
   children: React.ReactNode;
 }) {
-  const bg = appearance.canvas.backgroundColor;
-  useLayoutEffect(() => {
-    document.documentElement.style.setProperty("--bg-deep", bg);
-  }, [bg]);
   return (
     <AppearanceContext.Provider value={appearance}>
       {children}

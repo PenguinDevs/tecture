@@ -201,6 +201,7 @@ function DiagramCanvasInner({ diagramId, onSelectNode, onDrillIn }: Props) {
         style={{
           opacity: ready ? 1 : 0,
           transition: "opacity 0.2s ease-in",
+          backgroundColor: appearance.canvas.backgroundColor,
         }}
       >
         {appearance.canvas.grid !== GridVariant.None && (
@@ -209,6 +210,7 @@ function DiagramCanvasInner({ diagramId, onSelectNode, onDrillIn }: Props) {
             gap={appearance.canvas.gridGap}
             size={1}
             color={appearance.canvas.gridColor}
+            bgColor={appearance.canvas.backgroundColor}
           />
         )}
         {appearance.controls.visible && (

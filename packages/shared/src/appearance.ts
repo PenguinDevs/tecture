@@ -162,7 +162,7 @@ export const DEFAULT_APPEARANCE: GraphAppearance = {
     borderWidth: 1.5,
   },
   canvas: {
-    backgroundColor: "#0a0f1a",
+    backgroundColor: "#141414",
     grid: GridVariant.Lines,
     gridGap: 20,
     gridColor: "rgba(34, 78, 130, 0.12)",

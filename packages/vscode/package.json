@@ -272,7 +272,7 @@
         "tecture.graph.canvas.backgroundColor": {
           "type": "string",
           "format": "color",
-          "default": "#0a0f1a",
+          "default": "#141414",
           "markdownDescription": "Canvas background colour. Any CSS colour: hex, `rgb()`/`rgba()`, `hsl()`/`hsla()` or a named colour.",
           "scope": "window"
         },
