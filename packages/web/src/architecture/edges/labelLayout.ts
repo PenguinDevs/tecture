@@ -1,4 +1,6 @@
-import { createContext, useContext, useSyncExternalStore } from "react";
+import { createContext, useContext, useEffect, useSyncExternalStore } from "react";
+import { useStore, type ReactFlowState } from "@xyflow/react";
+import { CONTAINER_HEADER } from "../ArchitectureNode";
 
 /** A point on an edge path, in flow coordinates. */
 export interface LabelCandidate {
@@ -24,7 +26,7 @@ export interface LabelPlacement {
 export interface LabelRequest {
   width: number;
   height: number;
-  /** Ordered by preference; the first one clear of other labels wins. */
+  /** Ordered by preference; the first one clear of other labels and nodes wins. */
   candidates: LabelCandidate[];
 }
 
@@ -41,7 +43,7 @@ export const LabelSide = {
 } as const;
 export type LabelSide = (typeof LabelSide)[keyof typeof LabelSide];
 
-interface Rect {
+export interface Rect {
   x0: number;
   y0: number;
   x1: number;
@@ -56,6 +58,8 @@ const LINE_GAP = 3;
 const REFINE_ROUNDS = 6;
 /** Slack for path fractions, which pick up float rounding (0.5 - 0.4 < 0.1). */
 const FRACTION_EPSILON = 1e-9;
+/** Covering a node hides it; weigh that above covering another label. */
+const NODE_OVERLAP_WEIGHT = 4;
 
 function resolve(c: LabelCandidate, w: number, h: number): LabelPlacement {
   const reach = Math.abs(c.pushX) * (w / 2) + Math.abs(c.pushY) * (h / 2) + LINE_GAP;
@@ -78,13 +82,15 @@ function overlapArea(a: Rect, b: Rect): number {
 }
 
 /**
- * Places every edge label of one canvas so labels don't cover each other.
- * Edges register their label size and candidate spots along their path; the
- * store gives each label (in id order, so results are stable) its first
- * candidate clear of the others, falling back to the least-covering one.
+ * Places every edge label of one canvas so labels don't cover each other,
+ * nodes or container headers. Edges register their label size and candidate
+ * spots along their path; the store gives each label (in id order, so
+ * results are stable) its first candidate clear of all of those, falling
+ * back to the least-covering one.
  */
 export class LabelLayoutStore {
   private requests = new Map<string, LabelRequest>();
+  private obstacles: Rect[] = [];
   private placements = new Map<string, LabelPlacement>();
   private listeners = new Set<() => void>();
   private scheduled = false;
@@ -105,6 +111,12 @@ export class LabelLayoutStore {
 
   unregister(id: string): void {
     if (this.requests.delete(id)) this.schedule();
+  }
+
+  /** Boxes labels should stay off, in flow coordinates. */
+  setObstacles(rects: Rect[]): void {
+    this.obstacles = rects;
+    this.schedule();
   }
 
   /** Batches registrations from one render pass into a single solve. */
@@ -167,10 +179,11 @@ export class LabelLayoutStore {
     if (changed) for (const l of this.listeners) l();
   }
 
-  /** Area of `r` covering the other labels' current spots. */
+  /** Area of `r` covering other labels' current spots and (weighted) obstacles. */
   private cost(id: string, r: Rect, chosen: Map<string, { r: Rect }>): number {
     let cost = 0;
     for (const [other, o] of chosen) if (other !== id) cost += overlapArea(r, o.r);
+    for (const o of this.obstacles) cost += NODE_OVERLAP_WEIGHT * overlapArea(r, o);
     return cost;
   }
 }
@@ -249,4 +262,43 @@ export function candidatesAt(
     case LabelSide.Right:
       return [at(1)];
   }
+}
+
+/**
+ * Boxes labels should stay off: every node, except that a container only
+ * blocks its header band. Its body is where labels of edges between its
+ * children belong.
+ */
+export function obstacleRects(state: ReactFlowState): Rect[] {
+  const out: Rect[] = [];
+  for (const n of state.nodeLookup.values()) {
+    const { x, y } = n.internals.positionAbsolute;
+    const width = n.measured.width ?? 0;
+    const height = n.measured.height ?? 0;
+    const isContainer = n.data.isContainer === true;
+    out.push({
+      x0: x,
+      y0: y,
+      x1: x + width,
+      y1: y + (isContainer ? Math.min(CONTAINER_HEADER, height) : height),
+    });
+  }
+  return out;
+}
+
+function sameRects(a: Rect[], b: Rect[]): boolean {
+  return (
+    a.length === b.length &&
+    a.every((r, i) => {
+      const o = b[i]!;
+      return r.x0 === o.x0 && r.y0 === o.y0 && r.x1 === o.x1 && r.y1 === o.y1;
+    })
+  );
+}
+
+/** Keeps the store's obstacles in sync with the nodes; render inside `<ReactFlow>`. */
+export function LabelObstacleSync({ store }: { store: LabelLayoutStore }) {
+  const rects = useStore(obstacleRects, sameRects);
+  useEffect(() => store.setObstacles(rects), [store, rects]);
+  return null;
 }

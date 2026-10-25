@@ -143,7 +143,8 @@ interface ContainerNodeProps {
 }
 
 const CONTAINER_PADDING = 16;
-const CONTAINER_HEADER = 48;
+/** Height of a container's header band: its title, technology and drill-down link. */
+export const CONTAINER_HEADER = 48;
 
 function ContainerNode({ d, style, selected, activeSides, onDrillDown }: ContainerNodeProps) {
   const nodeId = useNodeId();
